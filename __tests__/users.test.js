@@ -1,11 +1,13 @@
-//User tests
-
-const { getUsers, fetchUsers } = require("../src/app/pages/api/users");
 const request = require("supertest");
 const app = require("../server/app");
+const seedDatabase = require("../seed/seed")
+
+beforeEach(() => {
+  return seedDatabase();
+});
 
 describe("User tests", () => {
-  test("Returns status 200 with the correct user object", () => {
+  test("Returns status 200 with the correct users array of objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -19,6 +21,17 @@ describe("User tests", () => {
             image_url: null,
           });
         });
+      });
+  });
+  test("Returns status 201 with the correct user object", () => {
+    const newUser = {username: 'newUser', password: 'password'};
+    return request(app)
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .then(( body ) => {
+        // console.log(body)
+        expect(body).toBe(1)
       });
   });
 });
