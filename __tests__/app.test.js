@@ -1,4 +1,5 @@
 const { getUsers, postUser } = require('../src/app/api/users/route')
+const { fetchPosts } = require('../src/app/api/posts/route')
 const seedDatabase = require('../seed/seed')
 
 beforeEach(async () => {
@@ -43,6 +44,26 @@ describe('post user', () => {
         })
     })
 })
+
+describe('Gets all Posts', ()=>{
+    test('200 - Gets all posts', async ()=>{
+        const response = await fetchPosts();
+        expect(response.status).toBe(200)
+
+        const posts = await response.json()
+            expect(posts).toHaveLength(2)
+            posts.forEach(post => {
+                expect(post).toMatchObject({
+                    post_id: expect.any(Number),
+                    likes: expect.any(Number),
+                    session_name: expect.any(String),
+                    description: expect.any(String),
+                    session_id: expect.any(Number),
+                    user_id: expect.any(Number)
+                })
+            })
+        })
+    })
 
 // const { createMocks } = require('node-mocks-http')
 
