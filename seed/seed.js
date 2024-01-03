@@ -14,24 +14,15 @@ async function seedDatabase() {
 
 
   try {
-    await prisma.Comments.deleteMany({});
     await prisma.$executeRaw`TRUNCATE TABLE "Comments" RESTART IDENTITY CASCADE`;
-    await prisma.Posts.deleteMany({});
     await prisma.$executeRaw`TRUNCATE TABLE "Posts" RESTART IDENTITY CASCADE`;
-    await prisma.LoggedWorkouts.deleteMany({});
     await prisma.$executeRaw`TRUNCATE TABLE "LoggedWorkouts" RESTART IDENTITY CASCADE`;
-    await prisma.ExercisesInWorkouts.deleteMany({});
-    await prisma.$executeRaw`TRUNCATE TABLE "ExercisesInWorkouts" RESTART IDENTITY CASCADE`;
-    await prisma.exercises.deleteMany({});
+    await prisma.$executeRaw`TRUNCATE TABLE "ExercisesInWorkouts"`;
     await prisma.$executeRaw`TRUNCATE TABLE "Exercises" RESTART IDENTITY CASCADE`;
-    await prisma.users.deleteMany({});
-    await prisma.$executeRaw`TRUNCATE TABLE "Users" RESTART IDENTITY CASCADE`;
-    await prisma.workouts.deleteMany({});
     await prisma.$executeRaw`TRUNCATE TABLE "Workouts" RESTART IDENTITY CASCADE`;
+    await prisma.$executeRaw`TRUNCATE TABLE "Users" RESTART IDENTITY CASCADE`;
    
-   
-
-    
+  
     // Insert the provided data into the database
     await prisma.exercises.createMany({
       data: exercises,
@@ -52,6 +43,4 @@ async function seedDatabase() {
   }
 }
 
-seedDatabase();
-
-module.exports = seedDatabase
+module.exports = seedDatabase;
