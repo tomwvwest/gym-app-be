@@ -1,4 +1,5 @@
 const { deletePostsById, patchPostById, fetchCommentsByPostId } = require("../src/app/api/posts/[id]/route");
+const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
 
 beforeEach(async () => {
@@ -107,5 +108,53 @@ describe('Get comments by post', ()=>{
         const comments = await response.json()
         expect(comments).toHaveLength(0)
         expect(comments).toEqual([])
+    })
+})
+
+describe('Posting a new Comment', ()=>{
+    test('201 - Create new comment returns the new comment', async ()=>{
+        const postData = {user_id: 1, post_id: 1, body: "hello"}
+        const response = await postComment(postData)
+        expect(response.status).toBe(201)
+
+        const comments = await response.json()
+            expect(comments).toMatchObject({
+                post_id: 1,
+                user_id: 1,
+                comment_id: 2,
+                body: 'hello'
+            })
+    })
+    test('400 - Missing Data', async ()=>{
+        const postData = {user_id: 1, body: "hello"}
+        const response = await postComment(postData);
+        expect(response.status).toBe(400);
+
+        const err = await response.json();
+        expect(err).toBe('Missing Data');
+    })
+    test('400 - Incorrect Data Type', async ()=>{
+        const postData = {user_id: 1, post_id: 1, body: 1}
+        const response = await postComment(postData);
+        expect(response.status).toBe(400);
+
+        const err = await response.json();
+        expect(err).toBe('Incorrect Data Type');
+    })
+    test('404 - No user found', async ()=>{
+        const postData = {user_id: 99, post_id: 1, body: "Hello"}
+        const response = await postComment(postData);
+        expect(response.status).toBe(404);
+
+        const err = await response.json();
+        expect(err).toBe('No users found');
+    })
+    test('404 - No post found', async ()=>{
+        const postData = {user_id: 1, post_id: 99, body: "Hello"}
+        const response = await postComment(postData);
+        expect(response.status).toBe(404);
+
+        const err = await response.json();
+        expect(err).toBe('No posts found');
     })
 })
