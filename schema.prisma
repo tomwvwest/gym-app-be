@@ -60,7 +60,7 @@ model LoggedWorkouts {
 }
 model Posts {
   post_id Int @id @default(autoincrement())
-  likes Int
+  likes Int @default(0)
   session_name String
   description String
   session_id Int
