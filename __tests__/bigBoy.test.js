@@ -1,6 +1,6 @@
 const { deletePostsById, patchPostById, fetchCommentsByPostId } = require("../src/app/api/posts/[id]/route");
 const { deleteCommentById, } = require("../src/app/api/comments/[id]/route");
-const { loginUser } = require("../src/app/api/users/route");
+const { loginUser, fetchUserByUsername } = require("../src/app/api/users/route");
 const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
 
@@ -246,5 +246,34 @@ describe('Logging in a user', ()=>{
 
         const err = await response.json()
         expect(err).toBe('Missing Data')
+    })
+})
+
+describe('Gets a user by username', ()=>{
+    test("200 - Gets users", async ()=>{
+        const response = await fetchUserByUsername('willprice')
+        expect(response.status).toBe(200)
+
+        const users = await response.json()
+        expect(users).toMatchObject({
+            user_id: 4,
+            username: 'willprice',
+            password: 'welovetom',
+            image_url: null
+        })
+    })
+    test('400 - Incorrect Data type', async ()=>{
+        const response = await fetchUserByUsername(1)
+        expect(response.status).toBe(400)
+
+        const err = await response.json()
+        expect(err).toBe('Incorrect Data Type')
+    })
+    test('404 - No user found', async ()=>{
+        const response = await fetchUserByUsername('bigBoy')
+        expect(response.status).toBe(404)
+
+        const err = await response.json()
+        expect(err).toBe('No users found')
     })
 })
