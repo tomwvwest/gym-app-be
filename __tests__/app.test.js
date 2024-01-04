@@ -1,7 +1,6 @@
 const { fetchPosts, postPost } = require('../src/app/api/posts/route')
 const { getUsers, postUser } = require("../src/app/api/users/route");
 const { fetchPostById } = require(`../src/app/api/posts/[id]/route`)
-const { deletePostsById } = require("../src/app/api/posts/route");
 const seedDatabase = require("../seed/seed");
 
 beforeEach(async () => {
