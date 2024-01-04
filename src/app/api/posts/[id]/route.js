@@ -63,4 +63,25 @@ async function patchPostById (post_id) {
     return NextResponse.json({posts: updatePost}, {status: 200})
 }
 
-module.exports = {fetchPostById, deletePostsById, patchPostById}
+async function fetchCommentsByPostId (post_id) {
+    if(isNaN(parseInt(post_id))){
+        return NextResponse.json('Incorrect Data Type', {status: 400})
+    }
+    const posts = await prisma.posts.findUnique({
+        where: {
+            post_id: post_id
+        }
+    })
+
+    if(!posts){
+        return NextResponse.json('No posts found', {status: 404})
+    }
+    const comments = await prisma.comments.findMany({
+        where: {
+            post_id: post_id
+        }
+    })
+    return NextResponse.json(comments, {status: 200})
+}
+
+module.exports = {fetchPostById, deletePostsById, patchPostById, fetchCommentsByPostId}
