@@ -40,8 +40,24 @@ async function loginUser(loginData){
     }
 
     return NextResponse.json(users, {status: 200})
-
     
 }
 
-module.exports = {getUsers, postUser, loginUser}
+async function fetchUserByUsername (username) {
+    if(!isNaN(parseInt(username))){
+        return NextResponse.json('Incorrect Data Type', {status: 400}) 
+    }
+
+    const users = await prisma.users.findUnique({
+        where: {
+            username: username
+        }
+    })
+    if(!users){
+        return NextResponse.json('No users found', {status: 404})
+    }
+
+    return NextResponse.json(users, {status: 200})
+}
+
+module.exports = {getUsers, postUser, loginUser, fetchUserByUsername}
