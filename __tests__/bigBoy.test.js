@@ -1,4 +1,5 @@
 const { deletePostsById, patchPostById, fetchCommentsByPostId } = require("../src/app/api/posts/[id]/route");
+const { deleteCommentById, } = require("../src/app/api/comments/[id]/route");
 const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
 
@@ -156,5 +157,30 @@ describe('Posting a new Comment', ()=>{
 
         const err = await response.json();
         expect(err).toBe('No posts found');
+    })
+})
+
+describe('Deleting Comment By Id', ()=>{
+    test('200 - deletes and returns with and empty object', async()=>{
+            const response = await deleteCommentById(1)
+            expect(response.status).toBe(200)
+    
+            const comments = await response.json()
+            expect(comments).toEqual({})
+    })
+    test('400 - Incorrect Data Type ID', async ()=>{
+        const response = await deleteCommentById("String")
+            expect(response.status).toBe(400)
+    
+            const comments = await response.json()
+            expect(comments).toBe('Incorrect Data Type')
+    })
+
+    test('404 - No comment found', async ()=>{
+        const response = await deleteCommentById(99)
+        expect(response.status).toBe(404)
+
+        const comments = await response.json()
+        expect(comments).toBe('No comments found')
     })
 })
