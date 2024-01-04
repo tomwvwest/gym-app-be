@@ -26,7 +26,7 @@ async function seedDatabase() {
     await prisma.Posts.createMany({data:posts})
     await prisma.Comments.createMany({data:comments})
 
-    console.log('Data inserted successfully');
+    // console.log('Data inserted successfully');
   } catch (error) {
     console.error('Error inserting data:', error);
   } finally {
