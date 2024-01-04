@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-const { getUsers, postUser } = require('../src/app/api/users/route')
-const { postPost } = require('../src/app/api/posts/route')
-const seedDatabase = require('../seed/seed')
-=======
+const { fetchPosts, postPost } = require('../src/app/api/posts/route')
 const { getUsers, postUser } = require("../src/app/api/users/route");
 const { fetchPostById } = require(`../src/app/api/posts/[id]/route`)
 const seedDatabase = require("../seed/seed");
->>>>>>> main
 
 beforeEach(async () => {
   await seedDatabase();
@@ -141,6 +136,26 @@ describe('Post a new Post', ()=>{
         expect(err).toBe('User not found')
     })
 })
+
+describe('Gets all Posts', ()=>{
+    test('200 - Gets all posts', async ()=>{
+        const response = await fetchPosts();
+        expect(response.status).toBe(200)
+
+        const posts = await response.json()
+            expect(posts).toHaveLength(2)
+            posts.forEach(post => {
+                expect(post).toMatchObject({
+                    post_id: expect.any(Number),
+                    likes: expect.any(Number),
+                    session_name: expect.any(String),
+                    description: expect.any(String),
+                    session_id: expect.any(Number),
+                    user_id: expect.any(Number)
+                })
+            })
+        })
+    })
 
 // const { createMocks } = require('node-mocks-http')
 

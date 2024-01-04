@@ -1,6 +1,11 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 
+async function fetchPosts() {
+    const posts = await prisma.posts.findMany({})
+    return NextResponse.json(posts, {status: 200})
+}
+
 async function postPost(newPost) {
     if(!newPost.session_name || !newPost.description || !newPost.session_id || !newPost.user_id){
         return NextResponse.json('Missing Data', {status: 400})
@@ -22,4 +27,4 @@ async function postPost(newPost) {
     return NextResponse.json(posts, {status: 201})
 }
 
-module.exports = {postPost}
+module.exports = {postPost, fetchPosts}
