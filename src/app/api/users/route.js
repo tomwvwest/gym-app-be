@@ -60,4 +60,36 @@ async function fetchUserByUsername (username) {
     return NextResponse.json(users, {status: 200})
 }
 
-module.exports = {getUsers, postUser, loginUser, fetchUserByUsername}
+async function patchUserByName (username, patchData){
+    if(!username || (!patchData.password && !patchData.image_url)){
+        return NextResponse.json('Missing Data', {status: 400})
+    }
+
+    if(!isNaN(parseInt(username)) || !isNaN(parseInt(patchData.password)) || !isNaN(parseInt(patchData.image_url))){
+        return NextResponse.json('Incorrect Data Type', {status: 400})
+    }
+
+    const userCheck = await prisma.users.findUnique({
+        where: {
+            username: username
+        }
+    })
+
+    if(!userCheck){
+        return NextResponse.json('No users found', {status: 404})
+    }
+
+    const users = await prisma.users.update({
+        where: {
+            username: username
+        },
+        data: {
+            password: patchData.password  !== undefined ? patchData.password : userCheck.password,
+            image_url: patchData.image_url !== undefined ? patchData.image_url : userCheck.image_url
+        }
+    })
+
+    return NextResponse.json(users, {status: 200})
+}
+
+module.exports = {getUsers, postUser, loginUser, fetchUserByUsername, patchUserByName}
