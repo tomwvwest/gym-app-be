@@ -1,5 +1,6 @@
 const { deletePostsById, patchPostById, fetchCommentsByPostId } = require("../src/app/api/posts/[id]/route");
 const { deleteCommentById, } = require("../src/app/api/comments/[id]/route");
+const { loginUser } = require("../src/app/api/users/route");
 const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
 
@@ -182,5 +183,68 @@ describe('Deleting Comment By Id', ()=>{
 
         const comments = await response.json()
         expect(comments).toBe('No comments found')
+    })
+})
+
+describe('Logging in a user', ()=>{
+    test('200 - Logs in user', async ()=>{
+        const loginData = {
+            username: 'willprice',
+            password: 'welovetom'
+        }
+        const response = await loginUser(loginData);
+        expect(response.status).toBe(200)
+
+        const users = await response.json()
+        expect(users).toMatchObject({
+            user_id: 4,
+            username: 'willprice',
+            password: 'welovetom',
+            image_url: null
+        })
+    })
+    test('404 - Incorrect Password', async ()=>{
+        const loginData = {
+            username: 'willprice',
+            password: 'google'
+        }
+        const response = await loginUser(loginData);
+        expect(response.status).toBe(404)
+
+        const err = await response.json()
+        expect(err).toBe('Incorrect Password')
+    })
+
+    test('404 - Incorrect Username', async ()=>{
+        const loginData = {
+            username: 'willprice1',
+            password: 'google'
+        }
+        const response = await loginUser(loginData);
+        expect(response.status).toBe(404)
+
+        const err = await response.json()
+        expect(err).toBe('Incorrect Username')
+    })
+    test('400 - Incorrect Data Type', async ()=>{
+        const loginData = {
+            username: 1,
+            password: 1
+        }
+        const response = await loginUser(loginData);
+        expect(response.status).toBe(400)
+
+        const err = await response.json()
+        expect(err).toBe('Incorrect Data Type')
+    })
+    test('400 - Missing Data', async ()=>{
+        const loginData = {
+            username: 1,
+        }
+        const response = await loginUser(loginData);
+        expect(response.status).toBe(400)
+
+        const err = await response.json()
+        expect(err).toBe('Missing Data')
     })
 })
