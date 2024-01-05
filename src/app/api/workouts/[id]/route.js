@@ -32,13 +32,23 @@ async function GET(request) {
 }
 
 async function POST(request) {
+    const workout_id = request.params.id;
+    const newExerciseList = request.body;
+
+    const newWorkout = newExerciseList.map((exercise) => {
+        return {
+            exercise_id: exercise.exercise_id,
+            workout_id: workout_id,
+        }
+    })
+
     try {
-        const newExerciseList = await prisma.workouts.create({
-            data: {
-                workout_name,
-                creator_id
-            }
+        await prisma.ExercisesInWorkouts.createMany({
+            data: newWorkout
         })
+
+        return NextResponse.json({ newWorkout }, {status: 201})
+
     } catch (error) {
         return handlePsqlErrors(error)
     }
