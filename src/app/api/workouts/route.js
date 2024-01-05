@@ -1,55 +1,68 @@
 const { NextResponse } = require("next/server");
 const { Prisma } = require("@prisma/client")
 const { prisma } = require("../../../../lib/prisma");
+const { handlePsqlErrors } = require('../../../../_utils/errors')
 
 async function checkUserExists(id) {
-    if (typeof id !== 'number') {
-        return Promise.reject({status: 400, message: "Bad Request."})
-    }
-
-    const user = await prisma.users.findUnique({
-        where:{
-            user_id: id
+    try {
+        if (typeof id !== 'number') {
+            throw Error('Bad request.')
         }
-    })
-    if (!user) { return Promise.reject({status: 404, message: "User does not exist."}) }
+
+        const user = await prisma.users.findUniqueOrThrow({
+            where:{
+                user_id: id
+            }
+        })
+
+    } catch (error) {
+        return handlePsqlErrors(error)
+    }
 }
 
-// async function checkWorkoutExists() {
-    
-// }
+async function checkWorkoutExists(id) {
+    try {
+        if (typeof id !== 'number') {
+            throw Error('Bad request.')
+        }
 
+        const user = await prisma.workouts.findUniqueOrThrow({
+            where:{
+                workout_id: id
+            }
+        })
+
+    } catch (error) {
+        return handlePsqlErrors(error, "Workout")
+    }
+}
+
+// get list of all workouts
 async function getWorkouts() {
     const workouts = await prisma.workouts.findMany()
     return NextResponse.json(workouts, {status: 200})
 }
 
+// get list of workouts created by current user
 async function getWorkoutsByCreatorId(creator_id) {
     try {        
-        // const userExists = 
-        await checkUserExists(creator_id)
-        // if (!userExists) { throw Error(404) }
+        const check = await checkUserExists(creator_id)
+        if (check) { return check }
 
         const workouts = await prisma.workouts.findMany({
             where: {
                 creator_id: creator_id
             }
         })
+
         return NextResponse.json(workouts, {status: 200})
 
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code === 'P2003') {
-                error.message = 'Cannot find workouts. User does not exist.'
-                error.status = 404;
-              }
-        } else if (!error.status) {
-            error.status = 400;
-        }
-        return NextResponse.json({message: error.message}, {status: error.status})
+        return handlePsqlErrors(error)
     }
 }
 
+//post workout to current user's list of workouts
 async function postWorkout(workout) {
     const { workout_name, creator_id } = workout;
 
@@ -68,23 +81,29 @@ async function postWorkout(workout) {
         return NextResponse.json({newWorkout}, {status: 201})
 
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code === 'P2003') {
-                error.message = 'Post failed. User does not exist.'
-                error.status = 404;
-              }
-        } else {
-            error.status = 400;
-        }
-
-        return NextResponse.json({message: error.message}, {status: error.status})
+        return handlePsqlErrors(error)
     }
 }
 
 // delete workout from list of workouts
-async function deleteWorkout(workout) {
+async function deleteWorkout(id) {
+    try {
+        const check = await checkWorkoutExists(id)
+        if (check) { return check }
 
+        const deletedWorkout = await prisma.workouts.delete({
+            where: {
+                workout_id: id
+            }
+        })
+
+        return NextResponse.json(deletedWorkout, {status: 204})
+
+    } catch (error) {
+        console.log(error)
+        return handlePsqlErrors(error)
+    }
 }
 
 
-module.exports = {getWorkouts, getWorkoutsByCreatorId, postWorkout, deleteWorkout, checkUserExists}
+module.exports = { getWorkouts, getWorkoutsByCreatorId, postWorkout, deleteWorkout, checkUserExists }

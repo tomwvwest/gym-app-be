@@ -16,19 +16,19 @@ describe("Utility functions", () => {
     });
 
     test("checkUserExists returns appropriate status and error message for non-existent user_id", async () => {
-        expect.assertions(2)
-        return checkUserExists(999).catch(error => {
-            expect(error.message).toMatch('User does not exist.')
-            expect(error.status).toBe(404)
-        })
+        const response = await checkUserExists(999);
+        expect(response.status).toBe(404);
+
+        const error = await response.json()
+        expect(error.message).toBe('User does not exist.')
     });
 
     test("checkUserExists returns appropriate status and error message for invalid user_id", async () => {
-        expect.assertions(2)
-        return checkUserExists('banana').catch(error => {
-            expect(error.message).toMatch('Bad Request.')
-            expect(error.status).toBe(400)
-        })
+        const response = await checkUserExists('banana');
+        expect(response.status).toBe(400);
+
+        const error = await response.json()
+        expect(error.message).toBe('Bad request.')
     });
 })
 
@@ -63,7 +63,6 @@ describe("GET workouts", () => {
 
   test("GET:404 sends an appropriate status and error message when provided with a non-existent creator_id", async () => {
     const response = await getWorkoutsByCreatorId(999);
-    // console.log(response)
     expect(response.status).toBe(404);
 
     const workouts = await response.json();
@@ -75,7 +74,7 @@ describe("GET workouts", () => {
     expect(response.status).toBe(400);
 
     const workouts = await response.json();
-    expect(workouts.message).toBe('Bad Request.');
+    expect(workouts.message).toBe('Bad request.');
   });
 });
 
@@ -101,7 +100,7 @@ describe("POST workout", () => {
     expect(response.status).toBe(404);
 
     const workouts = await response.json();
-    expect(workouts.message).toBe('Post failed. User does not exist.');
+    expect(workouts.message).toBe('User does not exist.');
   });
 
   test("POST:400 sends an appropriate status and error message when provided with an incomplete workout (no workout_name)", async () => {
@@ -124,3 +123,28 @@ describe("POST workout", () => {
     expect(workouts.message).toBe('Bad request.');
   });
 });
+
+describe("DELETE workout", () => {
+  test('DELETE:204 deletes a comment and sends no body back', async () => {
+    const response = await deleteWorkout(1);
+    expect(response.status).toBe(204);
+  });
+
+  test("GET:404 sends an appropriate status and error message when provided with a non-existent creator_id", async () => {
+    const response = await deleteWorkout(999);
+    expect(response.status).toBe(404);
+
+    const workouts = await response.json();
+    expect(workouts.message).toBe('Workout does not exist.');
+  });
+
+  test("GET:400 sends an appropriate status and error message when provided with a invalid creator_id", async () => {
+    const response = await deleteWorkout('banana');
+    expect(response.status).toBe(400);
+
+    const workouts = await response.json();
+    expect(workouts.message).toBe('Bad request.');
+  });
+
+
+})
