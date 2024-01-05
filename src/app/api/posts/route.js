@@ -1,7 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 
-async function fetchPosts() {
+async function fetchPosts(req, res) {
     const posts = await prisma.posts.findMany({})
     return NextResponse.json(posts, {status: 200})
 }
@@ -27,4 +27,6 @@ async function postPost(newPost) {
     return NextResponse.json(posts, {status: 201})
 }
 
-module.exports = {postPost, fetchPosts}
+export const GET = fetchPosts;
+export const POST = postPost;
+// module.exports = {postPost, fetchPosts}
