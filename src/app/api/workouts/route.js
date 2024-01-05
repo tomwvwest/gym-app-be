@@ -97,10 +97,9 @@ async function deleteWorkout(id) {
             }
         })
 
-        return NextResponse.json(deletedWorkout, {status: 204})
+        return new Response(null, {status: 204})
 
     } catch (error) {
-        console.log(error)
         return handlePsqlErrors(error)
     }
 }
