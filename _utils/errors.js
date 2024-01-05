@@ -15,6 +15,7 @@ async function handlePsqlErrors(error, psqlCol) {
 
     } else if (!error.status) {
         error.status = 400;
+        error.message = 'Bad request.'
     }
     return NextResponse.json({message: error.message}, {status: error.status})
 }
