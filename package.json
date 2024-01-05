@@ -13,6 +13,7 @@
     "@prisma/client": "^5.7.1",
     "@vercel/postgres": "^0.5.1",
     "next": "14.0.4",
+    "password-hash": "^1.2.2",
     "react": "^18",
     "react-dom": "^18",
     "supertest": "^6.3.3"

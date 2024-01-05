@@ -1,6 +1,8 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 
+const passwordHash = require('password-hash')
+
 async function getUsers() {
     const users = await prisma.Users.findMany()
     return NextResponse.json(users, {status: 200})
@@ -8,10 +10,11 @@ async function getUsers() {
 
 async function postUser(user) {
     const { username, password } = user;
+    const hash = passwordHash.generate(password)
     const newUser = await prisma.users.create({
         data: {
             username,
-            password
+            password: hash
         }
     })
     return NextResponse.json({newUser}, {status: 201})
@@ -35,7 +38,7 @@ async function loginUser(loginData){
         return NextResponse.json('Incorrect Username', {status: 404})
     }
 
-    if(loginData.password !== users.password){
+    if(!passwordHash.verify(loginData.password,users.password)){
         return NextResponse.json('Incorrect Password', {status: 404})
     }
 

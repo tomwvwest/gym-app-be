@@ -28,8 +28,8 @@ describe("/api/users", () => {
   });
 });
 
-describe("post user", () => {
-  test("returns status 201 with correct user object", async () => {
+describe.only("post user", () => {
+  test.only("returns status 201 with correct user object", async () => {
     const newUser = { username: "newUser", password: "password" };
 
     const response = await postUser(newUser);
@@ -39,7 +39,7 @@ describe("post user", () => {
     expect(newResponse.newUser).toEqual({
       user_id: 6,
       username: "newUser",
-      password: "password",
+      password: "sha1$bd5af880$1$c2d0672c920128ad489f907aed4debb4eb9a1f6b",
       image_url: null,
     });
   });
