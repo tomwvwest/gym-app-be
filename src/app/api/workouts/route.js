@@ -1,5 +1,4 @@
 const { NextResponse } = require("next/server");
-const { Prisma } = require("@prisma/client")
 const { prisma } = require("../../../../lib/prisma");
 const { handlePsqlErrors } = require('../../../../_utils/errors')
 
@@ -97,10 +96,9 @@ async function deleteWorkout(id) {
             }
         })
 
-        return NextResponse.json(deletedWorkout, {status: 204})
+        return new Response(null, {status: 204})
 
     } catch (error) {
-        console.log(error)
         return handlePsqlErrors(error)
     }
 }
