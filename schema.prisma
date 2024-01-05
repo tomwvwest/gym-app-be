@@ -65,6 +65,7 @@ model Posts {
   description String
   session_id Int
   user_id Int
+  completed_at DateTime @default(now())
   user Users @relation(fields: [user_id], references: [user_id])
   loggedworkout LoggedWorkouts @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
   comments Comments[]
