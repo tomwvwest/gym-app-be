@@ -1,5 +1,6 @@
 const { deletePostsById, patchPostById, fetchCommentsByPostId } = require("../src/app/api/posts/[id]/route");
 const { deleteCommentById, } = require("../src/app/api/comments/[id]/route");
+const { fetchUserById } = require("../src/app/api/users/[id]/route");
 const { loginUser, fetchUserByUsername, patchUserByName } = require("../src/app/api/users/route");
 const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
@@ -316,5 +317,20 @@ describe('Patch a user', ()=>{
 
         const err = await response.json()
         expect(err).toBe('No users found')
+    })
+})
+
+describe('Gets user by id', ()=>{
+    test('200 - Gets user by id', async ()=>{
+        const response = await fetchUserById(1)
+        expect(response.status).toBe(200)
+
+        const users = await response.json()
+        expect(users).toMatchObject({
+            user_id: 1,
+            username: 'jacobgarner',
+            password: 'welovetom',
+            image_url: null
+        })
     })
 })
