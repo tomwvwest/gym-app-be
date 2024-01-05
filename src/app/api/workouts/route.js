@@ -1,5 +1,4 @@
 const { NextResponse } = require("next/server");
-const { Prisma } = require("@prisma/client")
 const { prisma } = require("../../../../lib/prisma");
 const { handlePsqlErrors } = require('../../../../_utils/errors')
 
