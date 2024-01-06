@@ -2,6 +2,7 @@ const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../../lib/prisma");
 const { checkWorkoutExists } = require('../../../../../_utils/checkWorkoutExists');
 const { handlePsqlErrors } = require('../../../../../_utils/errors');
+const { checkExerciseExists } = require('../../../../../_utils/checkExerciseExists');
 
 async function GET(request) {
     const id = request.params.id
@@ -57,13 +58,31 @@ async function POST(request) {
     }
 }
 
-async function PATCH(request) {
-    
-}
-
 // deletes an exercise from a workout (list of exercises)
 async function DELETE(request) {
-    
+    const workout_id = request.params.workout_id;
+    const exercise_id = request.params.exercise_id;
+
+    try {
+        const checkExercise = await checkExerciseExists(exercise_id)
+        if (checkExercise) { return checkExercise }
+
+        const checkWorkout = await checkWorkoutExists(workout_id)
+        if (checkWorkout) { return checkWorkout }
+
+        await prisma.ExercisesInWorkouts.deleteMany({
+            where: {
+                workout_id: workout_id,
+                exercise_id: exercise_id
+            }
+        })
+
+        return new Response(null, {status: 204})
+
+    } catch (error) {
+        console.log('hello')
+        return handlePsqlErrors(error)
+    }
 }
 
-module.exports = { GET, POST, PATCH, DELETE }
+module.exports = { GET, POST, DELETE }
