@@ -121,5 +121,71 @@ describe('POST /api/workouts/:id', () => {
         expect(newExercises.map((exercise) => {
             return exercise.exercise_id
         })).toEqual([1, 2, 3, 7, 8])
-    })
+    });
+
+    test("POST:404 sends an appropriate status and error message when provided with a non-existent exercise_id", async () => {
+        const newExerciseList = [
+            { exercise_id: 2 }, 
+            { exercise_id: 1 },
+            { exercise_id: 7 },
+            { exercise_id: 3 },
+            { exercise_id: 834 },
+        ]
+
+        const req = createRequest({
+            method: "POST",
+            body: newExerciseList,
+            params: {
+                id: 6
+            }
+        })
+
+        const res = await POST(req);
+        expect(res.status).toBe(404);
+    
+        const workouts = await res.json();
+        expect(workouts.message).toBe('Exercise does not exist.');
+      });
+    
+      test("POST:400 sends an appropriate status and error message when provided with an empty exercise list", async () => {
+        const newExerciseList = []
+
+        const req = createRequest({
+            method: "POST",
+            body: newExerciseList,
+            params: {
+                id: 6
+            }
+        })
+
+        const res = await POST(req);
+        expect(res.status).toBe(400);
+    
+        const workouts = await res.json();
+        expect(workouts.message).toBe('Bad request.');
+      });
+    
+      test("POST:400 sends an appropriate status and error message when provided with an invalid exercise_id", async () => {
+        const newExerciseList = [
+            { exercise_id: 2 }, 
+            { exercise_id: 1 },
+            { exercise_id: 'banana' },
+            { exercise_id: 3 },
+            { exercise_id: 9 },
+        ]
+
+        const req = createRequest({
+            method: "POST",
+            body: newExerciseList,
+            params: {
+                id: 6
+            }
+        })
+
+        const res = await POST(req);
+        expect(res.status).toBe(400);
+    
+        const workouts = await res.json();
+        expect(workouts.message).toBe('Bad request.');
+      });
 })

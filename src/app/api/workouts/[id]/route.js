@@ -35,6 +35,7 @@ async function POST(request) {
     const workout_id = request.params.id;
     const newExerciseList = request.body;
 
+
     const newWorkout = newExerciseList.map((exercise) => {
         return {
             exercise_id: exercise.exercise_id,
@@ -43,6 +44,8 @@ async function POST(request) {
     })
 
     try {
+        if (!newWorkout.length) { throw Error() }
+
         await prisma.ExercisesInWorkouts.createMany({
             data: newWorkout
         })
@@ -50,7 +53,7 @@ async function POST(request) {
         return NextResponse.json({ newWorkout }, {status: 201})
 
     } catch (error) {
-        return handlePsqlErrors(error)
+        return handlePsqlErrors(error, 'Exercise')
     }
 }
 
@@ -58,6 +61,7 @@ async function PATCH(request) {
     
 }
 
+// deletes an exercise from a workout (list of exercises)
 async function DELETE(request) {
     
 }
