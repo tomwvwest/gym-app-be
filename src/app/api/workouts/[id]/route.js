@@ -4,8 +4,8 @@ const { checkWorkoutExists } = require('../../../../../_utils/checkWorkoutExists
 const { handlePsqlErrors } = require('../../../../../_utils/errors');
 const { checkExerciseExists } = require('../../../../../_utils/checkExerciseExists');
 
-async function GET(request) {
-    const id = request.params.id
+async function GET(request, { params }) {
+    const id = Number(params.id)
 
     try {        
         const check = await checkWorkoutExists(id)
