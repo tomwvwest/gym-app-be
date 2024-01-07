@@ -7,25 +7,25 @@ export const Footer = () => {
       <ul className="w-full justify-between py-3 opacity-75 font-semibold grid grid-cols-5 text-center text-sm">
         <li>
           <Link href="/" className={styles.footerListItem}>
-            <img src="homeIcon.png"></img>
+            <img src="../homeIcon.png"></img>
             Home
           </Link>
         </li>
         <li>
           <Link href="/workouts" className={styles.footerListItem}>
-            <img src="workoutsIcon.png"></img>My Workouts
+            <img src="../workoutsIcon.png"></img>My Workouts
           </Link>
         </li>
         <li className={styles.footerListItem}>
-          <img src="logIcon.png"></img>Log
+          <img src="../logIcon.png"></img>Log
         </li>
         <li>
           <Link href="/browse" className={styles.footerListItem}>
-            <img src="browseIcon.png"></img>Browse
+            <img src="../browseIcon.png"></img>Browse
           </Link>
         </li>
         <li className={styles.footerListItem}>
-          <img src="planIcon.png"></img>Plan
+          <img src="../planIcon.png"></img>Plan
         </li>
       </ul>
     </div>
