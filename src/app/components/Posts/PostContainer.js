@@ -1,5 +1,4 @@
 export const PostContainer = ({ post, isNotLastChild }) => {
-  console.log(post);
   return (
     <div className="mb-5 min-w-[80%] max-w-[500px] ">
       <div className="flex items-center mb-3">

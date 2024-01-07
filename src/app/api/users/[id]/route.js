@@ -1,8 +1,8 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../../lib/prisma");
 
-async function GET(req) {
-  const id = req.params.id;
+async function GET(req, {params}) {
+  const id = Number(params.id);
   const users = await prisma.users.findUnique({
     where: {
       user_id: id,
