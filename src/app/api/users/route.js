@@ -3,7 +3,7 @@ const { prisma } = require("../../../../lib/prisma");
 
 const passwordHash = require('password-hash')
 
-async function getUsers() {
+async function GET() {
     const users = await prisma.Users.findMany()
     return NextResponse.json(users, {status: 200})
 }
@@ -95,4 +95,4 @@ async function patchUserByName (username, patchData){
     return NextResponse.json(users, {status: 200})
 }
 
-module.exports = {getUsers, postUser, loginUser, fetchUserByUsername, patchUserByName}
+module.exports = {GET, postUser, loginUser, fetchUserByUsername, patchUserByName}

@@ -7,5 +7,5 @@ import { Title } from "../components/General/Title";
 // import { useEffect, useState } from "react";
 
 export default function WorkoutsPage() {
-  return (<Title text={"MyWorkouts"} />);
+  return (<Title text={"My Workouts"} />);
 }

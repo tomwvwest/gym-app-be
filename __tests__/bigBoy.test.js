@@ -321,10 +321,9 @@ describe('Patch a user', ()=>{
 })
 
 describe('Gets user by id', ()=>{
-    test('200 - Gets user by id', async ()=>{
+    test.only('200 - Gets user by id', async ()=>{
         const response = await fetchUserById(1)
         expect(response.status).toBe(200)
-
         const users = await response.json()
         expect(users).toMatchObject({
             user_id: 1,

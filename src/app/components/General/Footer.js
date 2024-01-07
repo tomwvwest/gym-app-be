@@ -13,14 +13,16 @@ export const Footer = () => {
         </li>
         <li>
           <Link href="/workouts" className={styles.footerListItem}>
-            <img src="workoutsIcon.png"></img>MyWorkouts
+            <img src="workoutsIcon.png"></img>My Workouts
           </Link>
         </li>
         <li className={styles.footerListItem}>
           <img src="logIcon.png"></img>Log
         </li>
-        <li className={styles.footerListItem}>
-          <img src="browseIcon.png"></img>Browse
+        <li>
+          <Link href="/browse" className={styles.footerListItem}>
+            <img src="browseIcon.png"></img>Browse
+          </Link>
         </li>
         <li className={styles.footerListItem}>
           <img src="planIcon.png"></img>Plan
