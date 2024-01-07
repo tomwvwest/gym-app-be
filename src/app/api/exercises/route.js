@@ -1,7 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 
-async function getExercises() {
+async function GET() {
   const exercises = await prisma.exercises.findMany({});
   return NextResponse.json(exercises, { status: 200 });
 }
@@ -23,4 +23,4 @@ async function postExercise(newExercise) {
   return NextResponse.json(exercise, {status: 201})
 }
 
-module.exports = { getExercises, postExercise };
+module.exports = { GET, postExercise };

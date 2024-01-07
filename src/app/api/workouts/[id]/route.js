@@ -33,21 +33,23 @@ async function GET(request, { params }) {
 }
 
 async function POST(request) {
-    const workout_id = request.params.id;
-    const newExerciseList = request.body;
+    const body = await request.json();
+    const workout_id = Number(body.workout_id);
+    const exercise_id = body.exercise_id;
 
+    // const newWorkout = newExerciseList.map((exercise) => {
+    //     return {
+    //         exercise_id: exercise.exercise_id,
+    //         workout_id: workout_id,
+    //     }
+    // })
 
-    const newWorkout = newExerciseList.map((exercise) => {
-        return {
-            exercise_id: exercise.exercise_id,
-            workout_id: workout_id,
-        }
-    })
+    const newWorkout = { exercise_id, workout_id }
 
     try {
-        if (!newWorkout.length) { throw Error() }
+        // if (!newWorkout.length) { throw Error() }
 
-        await prisma.ExercisesInWorkouts.createMany({
+        const res = await prisma.ExercisesInWorkouts.create({
             data: newWorkout
         })
 
