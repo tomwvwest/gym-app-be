@@ -37,7 +37,7 @@ async function checkWorkoutExists(id) {
 }
 
 // get list of all workouts
-async function getWorkouts() {
+async function GET() {
     const workouts = await prisma.workouts.findMany()
     return NextResponse.json(workouts, {status: 200})
 }
@@ -104,4 +104,4 @@ async function deleteWorkout(id) {
 }
 
 
-module.exports = { getWorkouts, getWorkoutsByCreatorId, postWorkout, deleteWorkout, checkUserExists }
+module.exports = { GET, getWorkoutsByCreatorId, postWorkout, deleteWorkout, checkUserExists }
