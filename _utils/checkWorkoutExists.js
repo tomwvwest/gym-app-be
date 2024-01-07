@@ -11,8 +11,7 @@ async function checkWorkoutExists(id) {
                 workout_id: id
             }
         })
-
-        console.log('workout:', workout)
+        
     } catch (error) {
         return handlePsqlErrors(error, "Workout")
     }
