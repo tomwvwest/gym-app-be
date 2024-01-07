@@ -1,35 +1,64 @@
 "use client";
 
+import { BrowseUsersContainer } from "../components/Browse/BrowseUsersContainer";
 import { BrowseWorkoutsContainer } from "../components/Browse/BrowseWorkoutsContainer";
 import { LoadingSkeleton } from "../components/General/LoadingSkeleton";
 import { Title } from "../components/General/Title";
 import { useEffect, useState } from "react";
 
-export default function BrowsePage(){
-
+export default function BrowsePage() {
   const [workouts, setWorkouts] = useState(null);
-  const [isLoading, setIsLoading] = useState(true)
+  const [users, setUsers] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showWorkouts, setShowWorkouts] = useState(true);
 
   useEffect(() => {
-    fetch("/api/workouts")
-      .then((res) => {
-        setIsLoading(false)
-        return res.json();
+    Promise.all([fetch("/api/workouts"), fetch("/api/users")])
+      .then(([res, res2]) => {
+        return Promise.all([res.json(), res2.json()]);
       })
-      .then((workoutsData) => {
-        console.log(workoutsData)
+      .then(([workoutsData, usersData]) => {
+        setIsLoading(false);
         setWorkouts(workoutsData);
+        setUsers(usersData);
       });
   }, []);
 
-  if(isLoading) {
-    return <LoadingSkeleton/>
+  function handleShowContent(e) {
+    setShowWorkouts(e.target.textContent === "Workouts");
   }
 
-  return(
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
+
+  return (
     <main>
-      <Title text={"Browse Workouts"}/>
-      <BrowseWorkoutsContainer workouts={workouts}/>
+      <Title text={"Browse"} />
+      <div className="flex p-1 ml-12 mb-5">
+        <p
+          className={`mr-5 hover:cursor-pointer p-1 rounded ${
+            showWorkouts ? "border font-bold" : null
+          }`}
+          onClick={handleShowContent}
+        >
+          Workouts
+        </p>
+        <p
+          onClick={handleShowContent}
+          className={`hover:cursor-pointer p-1 rounded ${
+            !showWorkouts ? "border font-bold" : null
+          }`}
+        >
+          Users
+        </p>
+      </div>
+
+      {showWorkouts ? (
+        <BrowseWorkoutsContainer workouts={workouts} />
+      ) : (
+        <BrowseUsersContainer users={users} />
+      )}
     </main>
-  )
+  );
 }
