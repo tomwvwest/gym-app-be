@@ -42,7 +42,7 @@ model ExercisesInWorkouts {
   exercise_id Int
   workout_id Int
   exercise Exercises @relation(fields: [exercise_id], references: [exercise_id])
-  workout Workouts @relation(fields: [workout_id], references: [workout_id])
+  workout Workouts @relation(fields: [workout_id], references: [workout_id], onDelete: Cascade)
   @@id([exercise_id, workout_id])
 }
 model LoggedWorkouts {
@@ -54,7 +54,7 @@ model LoggedWorkouts {
     reps Int
     completed_at DateTime @default(now())
     exercise Exercises @relation(fields: [exercise_id], references: [exercise_id])
-    workout Workouts @relation(fields: [workout_id], references: [workout_id])
+    workout Workouts @relation(fields: [workout_id], references: [workout_id], onDelete: Cascade)
     user Users @relation(fields: [user_id], references: [user_id])
     posts Posts[]
 }
@@ -65,8 +65,9 @@ model Posts {
   description String
   session_id Int
   user_id Int
+  completed_at DateTime @default(now())
   user Users @relation(fields: [user_id], references: [user_id])
-  loggedworkout LoggedWorkouts @relation(fields: [session_id], references: [session_id])
+  loggedworkout LoggedWorkouts @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
   comments Comments[]
 }
 model Comments {
@@ -75,6 +76,6 @@ model Comments {
   post_id Int
   body String
   user Users @relation(fields: [user_id], references: [user_id])
-  posts Posts @relation(fields: [post_id], references: [post_id])
+  posts Posts @relation(fields: [post_id], references: [post_id], onDelete: Cascade)
 }
 
