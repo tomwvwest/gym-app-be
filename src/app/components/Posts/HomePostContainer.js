@@ -1,8 +1,10 @@
 import { PostContainer } from "./PostContainer";
+import { Title } from "../General/Title";
 
 export const HomePostContainer = ({ posts }) => {
   return (
-    <>
+    <section className='pt-24'>
+      <Title text={"Home"}/>
       {posts.map((post, index, array) => {
         const isNotLastChild = index !== array.length - 1 ? true : false;
         return (
@@ -11,6 +13,6 @@ export const HomePostContainer = ({ posts }) => {
           </div>
         );
       })}
-    </>
+    </section>
   );
 };
