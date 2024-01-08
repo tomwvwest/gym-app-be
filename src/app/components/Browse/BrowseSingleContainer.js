@@ -27,7 +27,7 @@ export const BrowseSingleContainer = ({ workout }) => {
         <Link href={`/workouts/${workout.workout_id}`}>
           <p className="font-bold hover:underline">{workout.workout_name}</p>
         </Link>
-        <Link href={`/${user.username}`}>
+        <Link href={`/profile/${user.username}`}>
           <p className="italic hover:underline">{user.username}</p>
         </Link>
         <button>+</button>
