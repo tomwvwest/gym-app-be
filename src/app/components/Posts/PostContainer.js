@@ -4,7 +4,7 @@ import { CommentsContainer } from "./CommentsContainer";
 export const PostContainer = ({ post, isNotLastChild }) => {
   const [user, setUser] = useState(null);
   const [comments, setComments] = useState(null);
-  const [showComments, setShowComments] = useState(true);
+  const [showComments, setShowComments] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
           {comments.length ? (
             <img
               src="white-back-arrow.png"
-              className={`rotate-180 ml-1 hover:cursor-pointer ${showComments ? '-rotate-90' : null}`}
+              className={`ml-1 hover:cursor-pointer ${showComments ? '-rotate-90' : 'rotate-180'}`}
               onClick={handleShowComments}
             ></img>
           ) : null}
