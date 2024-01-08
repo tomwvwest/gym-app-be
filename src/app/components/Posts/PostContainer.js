@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CommentsContainer } from "./CommentsContainer";
+import Link from "next/link";
 
 export const PostContainer = ({ post, isNotLastChild }) => {
   const [user, setUser] = useState(null);
@@ -30,6 +31,12 @@ export const PostContainer = ({ post, isNotLastChild }) => {
     setShowComments(!showComments);
   }
 
+  function convertToDateString(str){
+    const date = str.slice(8,10) + '/' + str.slice(5,7) + '/' + str.slice(0,4)
+    const time = str.slice(11,16)
+    
+    return {time, date}
+  }
 
   return (
     <div className="mb-5 min-w-[80%] max-w-[500px] ">
@@ -37,9 +44,11 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         <div className="w-11 h-11 rounded-full overflow-hidden">
           <img src="image.png"></img>
         </div>
-        <div className="ml-3 opacity-70 text-sm text-DeepPurple">
-          <p className="italic">{user.username}</p>
-          <p>6:30pm 11/12/23</p>
+        <div className="ml-3 opacity-50 text-sm text-DeepPurple">
+          <Link href={`/profile/${user.username}`} className="flex w-fit">
+            <p className="italic hover:underline">{user.username}</p>
+          </Link>
+          <p>{convertToDateString(post.completed_at).time} | {convertToDateString(post.completed_at).date}</p>
         </div>
       </div>
 
@@ -52,12 +61,14 @@ export const PostContainer = ({ post, isNotLastChild }) => {
           {comments.length ? (
             <img
               src="white-back-arrow.png"
-              className={`ml-1 hover:cursor-pointer ${showComments ? '-rotate-90' : 'rotate-180'}`}
+              className={`ml-1 hover:cursor-pointer transition-[0.15s] ${
+                showComments ? "-rotate-90" : "-rotate-180"
+              }`}
               onClick={handleShowComments}
             ></img>
           ) : null}
         </p>
-        {showComments ? <CommentsContainer comments={comments}/> : null}
+        {showComments ? <CommentsContainer comments={comments} /> : null}
       </div>
 
       {isNotLastChild ? <hr className="opacity-20" /> : null}
