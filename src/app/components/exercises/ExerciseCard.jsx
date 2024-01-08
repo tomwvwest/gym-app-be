@@ -1,16 +1,13 @@
-import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 
 export default function ExerciseCard({ workout_id, exercise, setExercises, workoutExercisesLoading }) {
-    const searchParams = useSearchParams();
-    const [removeWorkoutIsLoading, setRemoveWorkoutIsLoading] = useState(false)
+    const [isRemoving, setIsRemoving] = useState(false);
+    const [isRemoved, setIsRemoved] = useState(false);
     const [removeError, setRemoveError] = useState(null);
 
     const handleRemoveFromWorkout = () => {
-        setRemoveWorkoutIsLoading(true);
-        const params = new URLSearchParams(searchParams);
-        params.set('exercise_id', exercise.exercise_id);
+        setIsRemoving(true);
 
         fetch(`/api/workouts/${workout_id}`, {
             method: 'DELETE',
@@ -31,8 +28,10 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
             setRemoveError(error)
         })
         .finally(() => {
+            setIsRemoved(true)
             setTimeout(() => {
-                setRemoveWorkoutIsLoading(false)
+                setIsRemoved(false)
+                setIsRemoving(false)
             }, 3000)
         })
     }
@@ -41,11 +40,12 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
 
     return (
         <section>
+            {isRemoved ? <p>Exercise removed.</p> : null}
             {workoutExercisesLoading ? <LoadingSkeleton /> : null}
             <h2>{exercise.name}</h2>
             <p>{exercise.muscle}</p>
             <button onClick={handleRemoveFromWorkout} className="border rounded-lg px-2 py-1">Remove</button>
-            {removeWorkoutIsLoading ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
+            {isRemoving ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
         </section>
     )
 }
