@@ -1,4 +1,5 @@
 const { NextResponse } = require("next/server");
+const { headers } = require('next/headers');
 const { prisma } = require("../../../../../lib/prisma");
 const { checkWorkoutExists } = require('../../../../../_utils/checkWorkoutExists');
 const { handlePsqlErrors } = require('../../../../../_utils/errors');
@@ -61,9 +62,9 @@ async function POST(request) {
 }
 
 // deletes an exercise from a workout (list of exercises)
-async function DELETE(request) {
-    const workout_id = request.params.workout_id;
-    const exercise_id = request.params.exercise_id;
+async function DELETE(request, { params }) {
+    const workout_id = Number(params.id);
+    const exercise_id = Number(headers().get('exercise_id'))
 
     try {
         const checkExercise = await checkExerciseExists(exercise_id)
@@ -82,7 +83,7 @@ async function DELETE(request) {
         return new Response(null, {status: 204})
 
     } catch (error) {
-        console.log('hello')
+        console.log('Error thrown in route.js')
         return handlePsqlErrors(error)
     }
 }
