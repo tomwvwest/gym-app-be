@@ -1,5 +1,5 @@
 const { NextResponse } = require("next/server");
-const { prisma } = require("../../../../../lib/prisma");
+const { prisma } = require("../../../../../../lib/prisma");
 
 async function GET (req, {params}) {
   const id = Number(params.id);
