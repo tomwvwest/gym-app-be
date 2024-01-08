@@ -23,8 +23,7 @@ async function POST(newExercise) {
   return NextResponse.json(exercise, {status: 201})
 }
 
-const getExercises = GET
 
 const postExercise = POST
 
-module.exports = { getExercises, postExercise };
+module.exports = { GET, postExercise };
