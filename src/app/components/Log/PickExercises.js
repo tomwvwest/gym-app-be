@@ -7,7 +7,7 @@ export const ListOfExercises = ({
   chosenExercises
 }) => {
   return (
-    <div className="border rounded-xl fixed h-[50%] w-[50%] overflow-auto z-30 bottom-[135px]">
+    <div className="border absolute rounded-xl h-[50vh] w-[60vh] overflow-auto -bottom-[50.5vh] z-5">
       {allExercises.map((exercise) => {
         return (
           <div key={exercise.exercise_id} className="">
