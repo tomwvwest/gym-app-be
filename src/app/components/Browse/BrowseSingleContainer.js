@@ -25,9 +25,11 @@ export const BrowseSingleContainer = ({ workout }) => {
     <div className="w-[80%] mb-4">
       <div className=" bg-LightPurple text-platinum rounded-2xl p-4 flex justify-between">
         <Link href={`/workouts/${workout.workout_id}`}>
-          <p className="font-bold">{workout.workout_name}</p>
+          <p className="font-bold hover:underline">{workout.workout_name}</p>
         </Link>
-        <p className="italic">{user.username}</p>
+        <Link href={`/${user.username}`}>
+          <p className="italic hover:underline">{user.username}</p>
+        </Link>
         <button>+</button>
       </div>
     </div>
