@@ -4,6 +4,7 @@ const { fetchUserById } = require("../src/app/api/users/[id]/route");
 const { loginUser, fetchUserByUsername, patchUserByName } = require("../src/app/api/users/route");
 const { postComment } = require("../src/app/api/comments/route");
 const seedDatabase = require("../seed/seed");
+const {postUser } = require("../src/app/api/users/route");
 
 beforeEach(async () => {
   await seedDatabase();
@@ -321,7 +322,7 @@ describe('Patch a user', ()=>{
 })
 
 describe('Gets user by id', ()=>{
-    test.only('200 - Gets user by id', async ()=>{
+    test('200 - Gets user by id', async ()=>{
         const response = await fetchUserById(1)
         expect(response.status).toBe(200)
         const users = await response.json()
@@ -333,3 +334,20 @@ describe('Gets user by id', ()=>{
         })
     })
 })
+
+describe.only("post user", () => {
+    test.only("returns status 201 with correct user object", async () => {
+      const newUser = { username: "newUser", password: "password" };
+  
+      const response = await postUser(newUser);
+      expect(response.status).toBe(201);
+  
+      const newResponse = await response.json();
+      expect(newResponse.newUser).toEqual({
+        user_id: 6,
+        username: "newUser",
+        password: "sha1$bd5af880$1$c2d0672c920128ad489f907aed4debb4eb9a1f6b",
+        image_url: null,
+      });
+    });
+  });
