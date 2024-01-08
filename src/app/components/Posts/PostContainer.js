@@ -52,7 +52,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
           {comments.length ? (
             <img
               src="white-back-arrow.png"
-              className={`ml-1 hover:cursor-pointer ${showComments ? '-rotate-90' : 'rotate-180'}`}
+              className={`ml-1 transition-[0.15s] hover:cursor-pointer ${showComments ? '-rotate-90' : '-rotate-180'}`}
               onClick={handleShowComments}
             ></img>
           ) : null}
