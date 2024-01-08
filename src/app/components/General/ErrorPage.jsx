@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 export const ErrorPage = ({ error = {status: 404, message: 'Page not found'} }) => {
-  console.log(error.status)
     return (
         <main className="w-full flex flex-col justify-center items-center">
             <h1 className="text-9xl font-extrabold text-white tracking-widest">{error.status || 503}</h1>
