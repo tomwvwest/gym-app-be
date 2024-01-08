@@ -4,7 +4,7 @@ export const BrowseSingleUserContainer = ({ user }) => {
   return (
     <div className="w-[80%] mb-4">
       <Link
-        href={`/${user.username}`}
+        href={`/profile/${user.username}`}
       >
         <div className=" bg-LightPurple text-platinum rounded-2xl p-4 flex justify-between">
           <p className="italic ">{user.username}</p>
