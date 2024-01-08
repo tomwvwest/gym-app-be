@@ -2,51 +2,68 @@ import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { ErrorPage } from '../../components/General/ErrorPage'
 
-export default function ExerciseListCard ({ exercises, setExercises, workout_id, exercise }) {
-    const [Error, setError] = useState(null);
+export default function ExerciseListCard ({ exercisesInWorkout, setExercisesInWorkout, workout_id, exercise }) {
+    const [postWorkoutError, setPostWorkoutError] = useState(false);
+    const [getExerciseError, setGetExerciseError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // for optimistic rendering, might need to GET exercise by exercise_id to find the name and muscle group
     const newExercise = {
         workout_id: workout_id,
         exercise_id: exercise.exercise_id
     }
 
+    let newExerciseObj = {};
+
     const handleAddToWorkout = async () => {
-        setExercises([newExercise, ...exercises])
+        const fetchNewExercise = async () => {
+            fetch(`/api/exercises/${exercise.exercise_id}`)
+            .then((res) => {
+                if (!res.ok) { throw res }
+                return res.json()
+            })
+            .then((data) => {
+                newExerciseObj = data;
+                setExercisesInWorkout([newExerciseObj, ...exercisesInWorkout])
+                return data
+            })
+            .catch((error) => {
+                setGetExerciseError(error)
+            })
+        }
 
-        fetch(`/api/workouts/${workout_id}`, {
-            method: 'POST',
-            header: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newExercise)
-        })
-        .then((res) => {
-            // console.log('Exercises:', res)
-            if (!res.ok) { throw res }
-            return res.json()
-        })
-        .then((data) => {
-            // console.log('Exercises data:', data)
-        })
-        .catch((error) => {
-            // console.log('POST Exercises Error:', error)
-            setError(error)
-        })
-        .finally(() => {
-            setIsLoading(false)
-        })
+        fetchNewExercise()
+
+        const postWorkout = async () => {
+            fetch(`/api/workouts/${workout_id}`, {
+                method: 'POST',
+                header: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newExercise)
+            })
+            .then((res) => {
+                if (!res.ok) { throw res }
+                return res.json()
+            })
+            .catch((error) => {
+                setPostWorkoutError(error)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        }
+
+        postWorkout()
     }
-
-    if (isLoading) return <LoadingSkeleton />
-    if (Error) return <ErrorPage error={Error}/>
 
     return (
         <section>
-        <h2>{exercise.name}</h2>
-        <p>{exercise.muscle}</p>
-        <button onClick={handleAddToWorkout} className="border rounded-lg px-2 py-1">Add to Workout</button>
-    </section>
+            {isLoading ? <p>Loading...</p> : null}
+            <h2>{exercise.name}</h2>
+            <p>{exercise.muscle}</p>
+            <button onClick={handleAddToWorkout} className="border rounded-lg px-2 py-1">Add to Workout</button>
+            {postWorkoutError ? <p>Error adding exercise to workout. Please try again.</p> : null}
+            {getExerciseError ? <p>Error finding exercise. Please try again.</p>: null}
+        </section>
     )
 }

@@ -6,11 +6,13 @@ import { ErrorPage } from '../../components/General/ErrorPage'
 import ExerciseModal from "@/app/components/exercises/ExerciseModal";
 
 export default function Workout({ params }) {
-    const [exercises, setExercises] = useState([]);
-    const [exerciseList, setExerciseList] = useState([]);
+    const [exercisesInWorkout, setExercisesInWorkout] = useState([]);
+    const [allExercises, setAllExercises] = useState([]);
+    const [fetchExercisesError, setFetchExercisesError] = useState(false);
     const [Error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [open, setOpen] = useState(false)
+    const [workoutIsLoading, setWorkoutIsLoading] = useState(true);
+    const [workoutExercisesLoading, setWorkoutExercisesLoading] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const workout_id = params.workout_id;
 
@@ -22,35 +24,30 @@ export default function Workout({ params }) {
                 return res.json()
             })
             .then((data) => {
-                // console.log('data:', data)
-                setExercises(data)
+                setExercisesInWorkout(data)
             })
             .catch((error) => {
-                // console.log('GET Workout Error:', error)
                 setError(error)
             })
             .finally(() => {
-                setIsLoading(false)
+                setWorkoutIsLoading(false)
             })
         }
 
         const fetchExercises = async () => {
-            fetch(`/api/exercises`)
+            fetch(`/api/exercises/`)
             .then((res) => {
-                // console.log('Exercises:', res)
                 if (!res.ok) { throw res }
                 return res.json()
             })
             .then((data) => {
-                // console.log('Exercises data:', data)
-                setExerciseList(data)
+                setAllExercises(data)
             })
             .catch((error) => {
-                // console.log('GET Exercises Error:', error)
-                setError(error)
+                setFetchExercisesError(error)
             })
             .finally(() => {
-                setIsLoading(false)
+                setWorkoutExercisesLoading(false)
             })
         }
 
@@ -65,27 +62,37 @@ export default function Workout({ params }) {
     const handleShowExercises = async (event) => {
         event.preventDefault()
         setOpen(true)
-
     }
 
-    if (isLoading) return <LoadingSkeleton />
+    if (workoutIsLoading) return <LoadingSkeleton />
     if (Error) return <ErrorPage error={Error}/>
 
     return (
         <main>
-            <h1>Workout {params.workout_id}</h1>
+            <h1>Workout {workout_id}</h1>
             <ul>
-                {exercises.map(((exercise) => {
-                    console.log(exercise)
+                {exercisesInWorkout.map(((exercise) => {
                     return (
                         <li key={exercise.exercise_id} className="border p-4 m-2 rounded-lg">
-                            <ExerciseCard exercise={exercise}/>
+                            <ExerciseCard
+                                workout_id={workout_id}
+                                exercise={exercise}
+                                setExercises={setExercisesInWorkout}
+                                workoutExercisesLoading={workoutExercisesLoading}/>
                         </li>
                     )
                 }))}
             </ul>
             <button className="border rounded-lg px-2 py-1" onClick={handleShowExercises}>Add Exercise</button>
-            <ExerciseModal setExercises={setExercises} exercises={exercises} exerciseList={exerciseList} workout_id={workout_id} visible={open} onClose={() => {setOpen(false)}}/>
+            <ExerciseModal 
+                setExercisesInWorkout={setExercisesInWorkout}
+                exercisesInWorkout={exercisesInWorkout}
+                allExercises={allExercises}
+                workout_id={workout_id}
+                visible={open}
+                onClose={() => {setOpen(false)}}
+                fetchExercisesError={fetchExercisesError}
+            />
         </main>
     )
 }

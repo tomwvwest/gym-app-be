@@ -1,7 +1,9 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../../lib/prisma");
 
-async function GET(id) {
+
+async function GET(request, { params }) {
+  const id = Number(params.id);
   if (isNaN(parseInt(id))) {
     return NextResponse.json("Incorrect Data Type", { status: 400 });
   }
