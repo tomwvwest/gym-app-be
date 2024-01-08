@@ -5,10 +5,10 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-export default function Login() {
+export default function SignUp() {
 
     const router = useRouter();
-    
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -26,23 +26,19 @@ export default function Login() {
             username: username,
             password: password
         }
-
-        axios.post('/api/users/login', postData).then(({data}) => {
-            sessionStorage.setItem('user_id', JSON.stringify(data.user_id))
-            sessionStorage.setItem('username', JSON.stringify(data.username))
-            sessionStorage.setItem('image', JSON.stringify(data.image_url))
+        axios.post('/api/users', postData).then((res)=>{
+            if(res.status !== 201){
+                console.log('Error')
+            }else{
+                router.push('/login')
+            }
         })
 
         setUsername('')
         setPassword('')
 
-        router.push('/')
-
     }
 
-    const usernameGet = sessionStorage.getItem('username')
-    console.log(usernameGet)
-    
     return (
         <section className='min-h-screen flex justify-evenly flex-col items-center'>
             <h1 className="pt-3 pb-2 font-extrabold text-3xl text-DeepPurple mb-3">Welcome to Jimmy</h1>
@@ -51,10 +47,10 @@ export default function Login() {
                 <input type="text" value={username} name="username" id="username" className='text-black-200 mt-5 mb-5 p-2' onChange={handleUsername} placeholder='Username...'/>
                 <label htmlFor="password" className='text-DeepPurple'>Password:</label>
                 <input type="text" value={password} name="password" id="password" className='text-black-200 mt-5 mb-5 p-2' onChange={handlePassword} placeholder='Password...'/>
-                <button>Login</button>
+                <button>Sign Up</button>
             </form>
-            <Link href={'/signup'}>
-                <h2 className="pt-3 pb-2 font-extrabold text-2xl text-DeepPurple mb-3">Sign Up</h2>
+            <Link href={'/login'}>
+                <h2 className="pt-3 pb-2 font-extrabold text-2xl text-DeepPurple mb-3">Login</h2>
             </Link>
         </section>
     )

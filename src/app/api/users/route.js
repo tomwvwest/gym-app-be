@@ -8,12 +8,12 @@ async function GET() {
     return NextResponse.json(users, {status: 200})
 }
 
-async function postUser(user) {
-    const { username, password } = user;
-    const hash = passwordHash.generate(password)
+async function POST (req, res) {
+    const body = await req.json()
+    const hash = passwordHash.generate(body.password)
     const newUser = await prisma.users.create({
         data: {
-            username,
+            username: body.username,
             password: hash
         }
     })
@@ -69,4 +69,4 @@ async function patchUserByName (username, patchData){
     return NextResponse.json(users, {status: 200})
 }
 
-module.exports = {GET, postUser, fetchUserByUsername, patchUserByName}
+module.exports = {GET, POST, fetchUserByUsername, patchUserByName}
