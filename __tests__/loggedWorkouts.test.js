@@ -1,4 +1,4 @@
-const { getCurrentId, postLoggedWorkout } = require("../src/app/api/loggedWorkouts/route");
+const { postLoggedWorkout, getCurrentId } = require("../src/app/api/loggedWorkouts/route");
 const seedDatabase = require("../seed/seed");
 beforeEach(async () => {
   await seedDatabase();
@@ -9,6 +9,7 @@ afterAll(async () => {
 describe("getCurrentId", ()=>{
     test("returns 200", async ()=>{
         const newLoggedWorkout = {
+            session_id: 9,
             exercise_id: 3,
             user_id: 1,
             workout_id: 1,
@@ -28,6 +29,7 @@ describe("getCurrentId", ()=>{
 describe("POST api/loggedWorkouts", () => {
     test("Returns status 201 with correct exercise object", async () => {
       const newLoggedWorkout = {
+        session_id: 9,
         exercise_id: 3,
         user_id: 1,
         workout_id: 1,
@@ -76,6 +78,7 @@ describe("POST api/loggedWorkouts", () => {
   });
   test("400 - User does not exist", async () => {
     const newLoggedWorkout = {
+        session_id: 3,
         exercise_id: 1,
         user_id: 1000000,
         workout_id: 1,

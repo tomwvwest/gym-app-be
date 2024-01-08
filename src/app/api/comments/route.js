@@ -1,7 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 
-async function postComment (commentData){
+async function POST (commentData){
     if(!commentData.user_id || !commentData.post_id || !commentData.body){
         return NextResponse.json('Missing Data', {status: 400})
     }
@@ -29,5 +29,7 @@ async function postComment (commentData){
     })
     return NextResponse.json(comments, {status: 201})
 }
+
+const postComment = POST
 
 module.exports = {postComment}
