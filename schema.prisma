@@ -46,7 +46,8 @@ model ExercisesInWorkouts {
   @@id([exercise_id, workout_id])
 }
 model LoggedWorkouts {
-    session_id Int @id @default(autoincrement())
+    logged_id Int @id @default(autoincrement())
+    session_id Int
     exercise_id Int
     workout_id Int
     user_id Int
@@ -56,7 +57,6 @@ model LoggedWorkouts {
     exercise Exercises @relation(fields: [exercise_id], references: [exercise_id])
     workout Workouts @relation(fields: [workout_id], references: [workout_id], onDelete: Cascade)
     user Users @relation(fields: [user_id], references: [user_id])
-    posts Posts[]
 }
 model Posts {
   post_id Int @id @default(autoincrement())
@@ -67,7 +67,6 @@ model Posts {
   user_id Int
   completed_at DateTime @default(now())
   user Users @relation(fields: [user_id], references: [user_id])
-  loggedworkout LoggedWorkouts @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
   comments Comments[]
 }
 model Comments {
@@ -75,6 +74,7 @@ model Comments {
   user_id Int
   post_id Int
   body String
+  completed_at DateTime @default(now())
   user Users @relation(fields: [user_id], references: [user_id])
   posts Posts @relation(fields: [post_id], references: [post_id], onDelete: Cascade)
 }

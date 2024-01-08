@@ -1,6 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../../lib/prisma");
 
+
 async function GET(request, { params }) {
   const id = Number(params.id);
   if (isNaN(parseInt(id))) {
@@ -17,4 +18,6 @@ async function GET(request, { params }) {
   return NextResponse.json(exercises, { status: 200 });
 }
 
-module.exports = { GET };
+const getExerciseById = GET
+
+module.exports = { getExerciseById };
