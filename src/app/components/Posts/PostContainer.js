@@ -73,7 +73,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
     <div className="mb-5 min-w-[80%] max-w-[500px] ">
       <div className="flex items-center mb-3">
         <div className="w-11 h-11 rounded-full overflow-hidden">
-          <img src="image.png"></img>
+          <img src="/image.png"></img>
         </div>
         <div className="ml-3 opacity-50 text-sm text-DeepPurple">
           <Link href={`/profile/${postUser.username}`} className="flex w-fit">
@@ -91,7 +91,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         <form onSubmit={handleSubmit} className='flex justify-center items-center pt-3'>
           <input type="text" className='text-DeepPurple p-1 rounded-lg w-full' name="comment" id="comment" value={newComment} onChange={handleNewComment} placeholder='New Comment...' required/>
           <button><img
-              src="white-back-arrow.png"
+              src="/white-back-arrow.png"
               className={`ml-1 -rotate-180`}/></button>
         </form> : null
         }
@@ -99,7 +99,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
           {comments.length ? `Comments (${comments.length})` : "No comments"}{" "}
           {comments.length ? (
             <img
-              src="white-back-arrow.png"
+              src="/white-back-arrow.png"
               className={`ml-1 hover:cursor-pointer transition-[0.15s] ${
                 showComments ? "-rotate-90" : "-rotate-180"
               }`}
