@@ -16,6 +16,13 @@ export const CommentContainer = ({ comment }) => {
       });
   }, []);
 
+  function convertToDateString(str){
+    const date = str.slice(8,10) + '/' + str.slice(5,7) + '/' + str.slice(0,4)
+    const time = str.slice(11,16)
+    
+    return {time, date}
+  }
+
   if (isLoading) return <div className="italic">Loading...</div>;
 
   return (
@@ -26,7 +33,7 @@ export const CommentContainer = ({ comment }) => {
       <div>
         <Link href={`/profile/${user.username}`} className="flex w-fit">
           <p className="italic opacity w-fit hover:underline">
-            {user.username}
+            {user.username} | {convertToDateString(comment.completed_at).time} | {convertToDateString(comment.completed_at).date}
           </p>
         </Link>
         <p className="">{comment.body}</p>

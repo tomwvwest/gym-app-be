@@ -1,10 +1,11 @@
 'use client'
-import ExerciseCard from "@/app/components/exercises/exerciseCard";
+import ExerciseCard from "@/app/components/exercises/ExerciseCard";
 import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { ErrorPage } from '../../components/General/ErrorPage'
-import ExerciseModal from "@/app/components/exercises/ExerciseModal";
+import ExerciseModal from "../../components/workouts/ExerciseModal";
 import Link from "next/link";
+import { Title } from "@/app/components/General/Title";
 
 export default function Workout({ params }) {
     const [exercisesInWorkout, setExercisesInWorkout] = useState([]);
@@ -70,8 +71,10 @@ export default function Workout({ params }) {
 
     return (
         <main>
-            <h1>Workout {workout_id}</h1>
-            <Link href="/workouts"><p>All Workouts</p></Link>
+            <Title text={`Workout ${workout_id}`}/>
+            <div className="w-fit">
+                <Link href="/workouts"><p>All Workouts</p></Link>
+            </div>
             <ul>
                 {!exercisesInWorkout.length ? <p>Add an exercise!</p> : null}
                 {exercisesInWorkout.map(((exercise) => {

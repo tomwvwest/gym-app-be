@@ -11,6 +11,7 @@ module.exports = {
       platinum: "#E7E7E7",
       Purple: "#4F46E5",
       LightPurple: '#5D5AC9',
+      white: '#FFFFFF',
       LightGreen: '#5FAD41',
       DarkGreen: '#2D936C',
       Red: '#B84A62'

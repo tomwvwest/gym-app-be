@@ -5,8 +5,10 @@ import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { useEffect, useState } from "react";
 import WorkoutCard from "../components/workouts/WorkoutCard";
 import { ErrorPage } from '@/app/components/General/ErrorPage';
+import { useUserContext } from "@/app/contexts/userContext";
 
 export default function WorkoutsPage() {
+  const { user, setUser } = useUserContext();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isWorkoutError, setIsWorkoutError] = useState(false);
@@ -14,9 +16,6 @@ export default function WorkoutsPage() {
   const [inputIsHidden, setInputIsHidden] = useState('hidden');
   const [workoutName, setWorkoutName] = useState('');
   const [isDeleted, setIsDeleted] = useState(false);
-
-
-  const creator_id = 2; // update when userContext is added
 
   useEffect(() => {
     fetch(`/api/workouts`)
@@ -54,7 +53,7 @@ export default function WorkoutsPage() {
     }, 3000)
     
     } else {
-      setWorkouts([...workouts, { creator_id: creator_id, workout_name: workoutName, workout_id: 'temp'}])
+      setWorkouts([...workouts, { creator_id: user.user_id, workout_name: workoutName, workout_id: 'temp'}])
 
       fetch(`/api/workouts`, {
         method: 'POST',
@@ -62,7 +61,7 @@ export default function WorkoutsPage() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          creator_id: creator_id,
+          creator_id: user.user_id,
           workout_name: workoutName,
         })
       })
