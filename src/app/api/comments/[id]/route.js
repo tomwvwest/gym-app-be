@@ -24,4 +24,4 @@ async function DELETE (comment_id) {
 
 const deleteCommentById = DELETE
 
-module.exports = {deleteCommentById}
+module.exports = {deleteCommentById, DELETE}

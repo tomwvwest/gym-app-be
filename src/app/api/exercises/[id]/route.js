@@ -20,4 +20,4 @@ async function GET(request, { params }) {
 
 const getExerciseById = GET
 
-module.exports = { getExerciseById };
+module.exports = { getExerciseById, GET };

@@ -26,4 +26,4 @@ async function POST(newExercise) {
 
 const postExercise = POST
 
-module.exports = { GET, postExercise };
+module.exports = { GET, postExercise, POST };

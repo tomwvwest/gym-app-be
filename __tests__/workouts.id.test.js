@@ -1,7 +1,8 @@
 const seedDatabase = require("../seed/seed");
 const { createRequest, createResponse } = require('node-mocks-http');
 const { GET, POST, DELETE } = require('../src/app/api/workouts/[id]/route');
-const { postWorkout } = require('../src/app/api/workouts/route')
+const { postWorkout } = require('../src/app/api/workouts/route');
+const { NextRequest } = require("next/server");
 
 beforeEach(async () => {
   await seedDatabase();
@@ -15,12 +16,11 @@ describe('GET /api/workouts/:id', () => {
     test('GET:200 returns workout for workout_id', async () => {
         const req = createRequest({
             method: "GET",
-            params: {
-                id: 2
-            }
         })
 
-        const res = await GET(req)
+        const query = { params : { id : 2 } }
+
+        const res = await GET(req, query)
         expect(res.status).toBe(200)
 
         const exercises = await res.json()
@@ -40,12 +40,11 @@ describe('GET /api/workouts/:id', () => {
     test("GET:404 sends an appropriate status and error message when provided with a non-existent workout_id", async () => {
         const req = createRequest({
             method: "GET",
-            params: {
-                id: 999
-            }
         })
 
-        const response = await GET(req)
+        const query = { params : { id : 999 } }
+
+        const response = await GET(req, query)
         expect(response.status).toBe(404)
     
         const workouts = await response.json();
@@ -55,12 +54,11 @@ describe('GET /api/workouts/:id', () => {
     test("GET:400 sends an appropriate status and error message when provided with a invalid workout_id", async () => {
         const req = createRequest({
             method: "GET",
-            params: {
-                id: 'banana'
-            }
         })
 
-        const response = await GET(req)
+        const query = { params : { id : 'banana' } }
+
+        const response = await GET(req, query)
         expect(response.status).toBe(400)
     
         const workouts = await response.json();
@@ -83,7 +81,7 @@ describe('POST /api/workouts/:id', () => {
             { exercise_id: 8 },
         ]
 
-        const req = createRequest({
+        const req = createRequest<NextRequest>({
             method: "POST",
             body: newExerciseList,
             params: {

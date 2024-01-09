@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SetsContainer } from "./SetsContainer";
 
 export const ChosenExerciseContainer = ({
@@ -6,8 +6,17 @@ export const ChosenExerciseContainer = ({
   chosenExercises,
   setChosenExercises,
   index,
+  workoutData,
+  setWorkoutData,
 }) => {
-  const [sets, setSets] = useState([{weight: 0, reps: 0}]);
+  const exerciseId = exercise.exercise_id;
+  const [sets, setSets] = useState([{ weight: 0, reps: 0 }]);
+
+  useEffect(() => {
+    const copyObject = { ...workoutData };
+    copyObject[exerciseId] = sets;
+    setWorkoutData(copyObject);
+  }, [sets]);
 
   function handleRemove(e) {
     const index = chosenExercises.indexOf(exercise);
@@ -21,26 +30,32 @@ export const ChosenExerciseContainer = ({
             ];
 
       setChosenExercises(amendedChosenExercises);
+      
+      const copyObject = {...workoutData}
+      delete copyObject[exerciseId];
+      setWorkoutData(copyObject)
     }
   }
 
-  return(<>
-    <p className="font-bold">
-      {index}. {exercise.name}
-    </p>
-    <p className=" text-sm pl-2 pb-2">
-      {exercise.difficulty} | {exercise.equipment}
-    </p>
-    <p className="pl-2 pb-2">{exercise.instructions}</p>
+  return (
+    <>
+      <p className="font-bold">
+        {index}. {exercise.name}
+      </p>
+      <p className=" text-sm pl-2 pb-2">
+        {exercise.difficulty} | {exercise.equipment}
+      </p>
+      <p className="pl-2 pb-2">{exercise.instructions}</p>
 
-    <div className="flex items-center">
-      <SetsContainer sets={sets} setSets={setSets}/>
-      <button
-        className="p-1 rounded border mr-2 ml-auto mt-auto"
-        onClick={handleRemove}
-      >
-        Remove
-      </button>
-    </div>
-  </>)
+      <div className="flex items-center">
+        <SetsContainer sets={sets} setSets={setSets} />
+        <button
+          className="p-1 rounded border mr-2 ml-auto mt-auto"
+          onClick={handleRemove}
+        >
+          Remove
+        </button>
+      </div>
+    </>
+  );
 };
