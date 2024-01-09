@@ -38,13 +38,6 @@ async function POST(request) {
     const workout_id = Number(body.workout_id);
     const exercise_id = body.exercise_id;
 
-    // const newWorkout = newExerciseList.map((exercise) => {
-    //     return {
-    //         exercise_id: exercise.exercise_id,
-    //         workout_id: workout_id,
-    //     }
-    // })
-
     const newWorkout = { exercise_id, workout_id }
 
     try {
