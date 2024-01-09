@@ -51,9 +51,9 @@ export default function Login() {
             <h1 className="pt-3 pb-2 font-extrabold text-3xl text-DeepPurple mb-3">Welcome to Jimmy</h1>
             <form className='text-DeepPurple flex flex-col justify-center items-center border p-4 rounded-2xl' onSubmit={handleSubmit}>
                 <label htmlFor="username" className='text-DeepPurple'>Username:</label>
-                <input type="text" value={username} name="username" id="username" className='text-black-200 mt-5 mb-5 p-2' onChange={handleUsername} placeholder='Username...'/>
+                <input type="text" value={username} name="username" id="username" className='text-black-200 mt-5 mb-5 p-2' onChange={handleUsername} placeholder='Username...' required/>
                 <label htmlFor="password" className='text-DeepPurple'>Password:</label>
-                <input type="password" value={password} name="password" id="password" className='text-black-200 mt-5 mb-5 p-2' onChange={handlePassword} placeholder='Password...'/>
+                <input type="password" value={password} name="password" id="password" className='text-black-200 mt-5 mb-5 p-2' onChange={handlePassword} placeholder='Password...' required/>
                 <button>Login</button>
             </form>
             <Link href={'/signup'}>
