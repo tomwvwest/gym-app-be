@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useUserContext } from "@/app/contexts/userContext";
 import WorkoutCard from "../../components/workouts/WorkoutCard";
 import { UserPostContainer } from "@/app/components/Posts/UserPosts";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage(req) {
   const { user, setUser } = useUserContext();
@@ -40,16 +40,18 @@ export default function ProfilePage(req) {
   }
 
   const handleLogout = () => {
-    setUser({})
-    router.push('/')
-  }
+    setUser({});
+    router.push("/");
+  };
 
   return (
     <>
-    <div className="flex items-center justify-center w-1/6">
-      <Title text={`${user.username}`} />
-      <button className='border rounded-lg p-2' onClick={handleLogout}>Logout</button>
-    </div>
+      <div className="flex justify-between items-end pr-16">
+        <Title text={`${user.username}`} />
+        <button className="border rounded-lg p-2" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
       <div className="px-12 pt-4 flex justify-around">
         <div className="w-full">
           <p className="text-2xl font-bold text-DeepPurple">Recent Posts</p>
