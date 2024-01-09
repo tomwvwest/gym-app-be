@@ -1,8 +1,8 @@
 'use client'
 
 import { Title } from "../components/General/Title"
-import ExerciseModal from "../components/exercises/ExerciseModal"
 import { useState, useEffect } from "react";
+import AllExercisesList from "../components/exercises/AllExercisesList";
 
 
 export default function Exercises () {
@@ -19,20 +19,20 @@ export default function Exercises () {
                 setAllExercises(data)
             })
             .catch((error) => {
-                setFetchExercisesError(error)
+                // setFetchExercisesError(error)
             })
             .finally(() => {
-                setWorkoutExercisesLoading(false)
+                // setWorkoutExercisesLoading(false)
             })
         }
 
         fetchExercises()
     }, [])
+
     return (
        <main>
-            <Title text={`Exercises`}/>
-
-            {/* <ExerciseModal visible={true} allExercises={allExercises}/> */}
+            <Title text={`All Exercises`}/>
+            <AllExercisesList allExercises={allExercises}/>
        </main> 
     )
 }
