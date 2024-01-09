@@ -1,17 +1,14 @@
 import { SetContainer } from "./SetContainer";
 
 export const SetsContainer = ({ sets, setSets }) => {
-
   function handleAddSet(e) {
-    setSets([...sets, {weight: 0, reps: 0}]);
+    setSets([...sets, { weight: 0, reps: 0 }]);
   }
 
   function handleDeleteSet(e) {
-    const index = parseInt(e.target.value);
-    
-    const copySets = [...sets]
-    const amended = copySets.filter((_, i) => i !== index)
-    setSets(amended)
+    const amendedSets = [...sets.slice(0, sets.length - 1)];
+
+    setSets(amendedSets);
   }
 
   return (
@@ -19,13 +16,31 @@ export const SetsContainer = ({ sets, setSets }) => {
       {sets.map((set, index) => {
         return (
           <div key={index} className="grid grid-cols-4 mb-1 ">
-            <SetContainer sets={sets} setSets={setSets} index={index} handleDeleteSet={handleDeleteSet}/>
+            <SetContainer
+              set={set}
+              sets={sets}
+              setSets={setSets}
+              index={index}
+              handleDeleteSet={handleDeleteSet}
+            />
           </div>
         );
       })}
-      <button className="ml-5 border rounded p-1 w-24" onClick={handleAddSet}>
-        Add Set
-      </button>
+
+      <div>
+        <button className="ml-5 border rounded p-1 w-24" onClick={handleAddSet}>
+          Add Set
+        </button>
+        <button
+          className={`ml-5 border rounded p-1 transition-[0.3s] ${
+            sets.length === 1 ? "opacity-30" : null
+          }`}
+          onClick={handleDeleteSet}
+          disabled={sets.length === 1}
+        >
+          Remove Set
+        </button>
+      </div>
     </div>
   );
 };

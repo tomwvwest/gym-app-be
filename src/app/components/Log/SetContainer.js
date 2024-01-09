@@ -1,4 +1,4 @@
-export const SetContainer = ({ setSets, index, sets, handleDeleteSet }) => {
+export const SetContainer = ({ set, index, sets, handleDeleteSet }) => {
 
   return (
     <>
@@ -11,11 +11,7 @@ export const SetContainer = ({ setSets, index, sets, handleDeleteSet }) => {
       <div className="flex">
         <p className="ml-20">Reps: </p>
         <input className="w-10 h-7 ml-4 p-1 focus:outline-none text-DeepPurple"></input>
-      </div>
-      {sets.length === 1 ? null: <button className="ml-5 border rounded p-1" onClick={handleDeleteSet} value={index}>
-        Remove Set
-      </button>}
-      
+      </div>     
     </>
   );
 };
