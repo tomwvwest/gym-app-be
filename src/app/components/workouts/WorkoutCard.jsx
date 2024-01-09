@@ -39,7 +39,7 @@ export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted }) {
     }
 
     return (
-        <div className="border p-3 m-5 rounded-xl">
+        <div className="border p-3 mt-5 ml-2 rounded-xl w-full">
             <Link href={`/workouts/${workout_id}`}>
                 <p className="text-lg">{workout.workout_name}</p>
             </Link>
