@@ -18,5 +18,27 @@ async function GET({params}) {
   return NextResponse.json(sessions, { status: 200 })
 }
 
+async function DELETE({params}) {
+    const id = Number(params.id);
+    if (isNaN(parseInt(id))) {
+      return NextResponse.json("Incorrect Data Type", { status: 400 });
+    }
+    const session = await prisma.loggedWorkouts.findMany({
+      where: {
+        session_id: id,
+      },
+    });
+  
+    if (!session) {
+      return NextResponse.json("No session found", { status: 404 });
+    }
+    const deletedSession = await prisma.loggedWorkouts.deleteMany({
+      where: {
+        session_id: id,
+      },
+    });
+    return NextResponse.json({}, { status: 204 });
+  }
 
-module.exports = { GET };
+
+module.exports = { GET, DELETE };

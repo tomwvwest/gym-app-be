@@ -1,4 +1,4 @@
-const { GET } = require("../src/app/api/loggedWorkouts/[id]/route");
+const { GET, DELETE } = require("../src/app/api/loggedWorkouts/[id]/route");
 const { createRequest, createResponse } = require('node-mocks-http');
 
 
@@ -17,3 +17,17 @@ describe("GET api/exercises", () => {
     });
   });
   
+//   describe('DELETE /api/workouts/:id', () => {
+//     test('DELETE:204 deletes an exercise and sends no body back', async () => {
+//         // const req = createRequest({
+//         //     method: "DELETE",
+//         //     params: {
+//         //         session_id: 1
+//         //     }
+//         // });
+
+//         const response = await DELETE(1);
+//         expect(response.status).toBe(200);
+//     })
+
+// })
