@@ -3,6 +3,15 @@ const { prisma } = require("../../../../lib/prisma");
 const { handlePsqlErrors } = require("../../../../_utils/errors");
 const { getCurrentId } = require("../../../../_utils/checkCurrentLoggedWorkoutId");
 
+async function getCurrentId() {
+  const currentId = await prisma.loggedWorkouts.findFirst({
+    orderBy: { completed_at: "desc" },
+    select: {
+      session_id: true,
+    },
+  });
+  return NextResponse.json(currentId, { status: 200 });
+}
 async function POST(newLoggedWorkout) {
   try {
   const loggedWorkout = await prisma.loggedWorkouts.create({
@@ -15,6 +24,4 @@ async function POST(newLoggedWorkout) {
   }
 }
 
-const postLoggedWorkout = POST
-
-module.exports = { postLoggedWorkout, getCurrentId, POST };
+module.exports = { POST, getCurrentId };
