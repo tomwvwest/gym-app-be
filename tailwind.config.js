@@ -10,7 +10,8 @@ module.exports = {
       DeepPurple: "#161032",
       platinum: "#E7E7E7",
       Purple: "#4F46E5",
-      LightPurple: '#5D5AC9'
+      LightPurple: '#5D5AC9',
+      LightGreen: '#5FAD41'
     },
     extend: {
       backgroundImage: {

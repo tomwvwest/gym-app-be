@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { CommentsContainer } from "./CommentsContainer";
 import Link from "next/link";
+import axios from 'axios'
 
 export const PostContainer = ({ post, isNotLastChild }) => {
   const [user, setUser] = useState(null);
   const [comments, setComments] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [newComment, setNewComments] = useState('')
+  const [showAddComments, setShowAddComments] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -20,6 +23,9 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         setUser(userData);
         setComments(commentsData);
         setIsLoading(false);
+        if(sessionStorage.getItem('user_id')){
+          setShowAddComments(true)
+        }
       });
   }, []);
 
@@ -36,6 +42,23 @@ export const PostContainer = ({ post, isNotLastChild }) => {
     const time = str.slice(11,16)
     
     return {time, date}
+  }
+
+  function handleNewComment(e){
+    setNewComments(e.target.value)
+  } 
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const commentData = {
+      post_id: post.post_id,
+      body: newComment,
+      user_id: parseInt(sessionStorage.getItem('user_id'))
+    }
+    setComments((prevVals) => [...prevVals, commentData])
+    axios.post('/api/comments', commentData).then((res)=>{
+      setNewComments('')
+    })
   }
 
   return (
@@ -56,6 +79,14 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         <h1 className="font-bold pl-2 pt-1 text-xl">{post.session_name}</h1>
         <p className="pl-2 pt-1 pb-2 text">{post.description}</p>
         <hr className="mt-1 opacity-40" />
+        {showAddComments ? 
+        <form onSubmit={handleSubmit} className='flex justify-center items-center pt-3'>
+          <input type="text" className='text-DeepPurple p-1 rounded-lg w-full' name="comment" id="comment" value={newComment} onChange={handleNewComment} placeholder='New Comment...'/>
+          <button><img
+              src="white-back-arrow.png"
+              className={`ml-1 -rotate-180`}/></button>
+        </form> : null
+        }
         <p className={`pl-2 pt-2 flex ${comments.length ? null : "italic"}`}>
           {comments.length ? `Comments (${comments.length})` : "No comments"}{" "}
           {comments.length ? (

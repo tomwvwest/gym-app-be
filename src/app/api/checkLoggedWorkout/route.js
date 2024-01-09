@@ -14,4 +14,4 @@ async function GET() {
 
 const getCurrentId = GET
 
-module.exports = { getCurrentId }
+module.exports = { getCurrentId, GET }
