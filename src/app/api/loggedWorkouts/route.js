@@ -11,7 +11,7 @@ async function getCurrentId() {
   });
   return NextResponse.json(currentId, { status: 200 });
 }
-async function postLoggedWorkout(newLoggedWorkout) {
+async function POST(newLoggedWorkout) {
   try {
     const loggedWorkout = await prisma.loggedWorkouts.create({
       data: newLoggedWorkout,
@@ -23,4 +23,4 @@ async function postLoggedWorkout(newLoggedWorkout) {
   }
 }
 
-module.exports = { postLoggedWorkout, getCurrentId };
+module.exports = { POST, getCurrentId };

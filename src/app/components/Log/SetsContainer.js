@@ -17,7 +17,6 @@ export const SetsContainer = ({ sets, setSets }) => {
         return (
           <div key={index} className="grid grid-cols-4 mb-1 ">
             <SetContainer
-              set={set}
               sets={sets}
               setSets={setSets}
               index={index}
