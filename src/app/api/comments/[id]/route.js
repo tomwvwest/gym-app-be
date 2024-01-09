@@ -1,7 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../../lib/prisma");
 
-async function deleteCommentById (comment_id) {
+async function DELETE (comment_id) {
     if(isNaN(parseInt(comment_id))){
         return NextResponse.json('Incorrect Data Type', {status: 400})
     }
@@ -22,4 +22,6 @@ async function deleteCommentById (comment_id) {
     return NextResponse.json({}, {status: 200})
 }
 
-module.exports = {deleteCommentById}
+const deleteCommentById = DELETE
+
+module.exports = {deleteCommentById, DELETE}

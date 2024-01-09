@@ -6,7 +6,7 @@ async function GET() {
   return NextResponse.json(exercises, { status: 200 });
 }
 
-async function postExercise(newExercise) {
+async function POST(newExercise) {
   if (
     !newExercise.name ||
     !newExercise.type ||
@@ -23,4 +23,7 @@ async function postExercise(newExercise) {
   return NextResponse.json(exercise, {status: 201})
 }
 
-module.exports = { GET, postExercise };
+
+const postExercise = POST
+
+module.exports = { GET, postExercise, POST };

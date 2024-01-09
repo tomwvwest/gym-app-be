@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { ErrorPage } from '../../components/General/ErrorPage'
 import ExerciseModal from "@/app/components/exercises/ExerciseModal";
+import Link from "next/link";
 
 export default function Workout({ params }) {
     const [exercisesInWorkout, setExercisesInWorkout] = useState([]);
@@ -70,7 +71,9 @@ export default function Workout({ params }) {
     return (
         <main>
             <h1>Workout {workout_id}</h1>
+            <Link href="/workouts"><p>All Workouts</p></Link>
             <ul>
+                {!exercisesInWorkout.length ? <p>Add an exercise!</p> : null}
                 {exercisesInWorkout.map(((exercise) => {
                     return (
                         <li key={exercise.exercise_id} className="border p-4 m-2 rounded-lg">

@@ -1,6 +1,7 @@
 const { NextResponse } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
-const { handlePsqlErrors } = require('../../../../_utils/errors')
+const { handlePsqlErrors } = require('../../../../_utils/errors');
+const { headers } = require('next/headers');
 
 async function checkUserExists(id) {
     try {
@@ -62,8 +63,9 @@ async function getWorkoutsByCreatorId(creator_id) {
 }
 
 //post workout to current user's list of workouts
-async function postWorkout(workout) {
-    const { workout_name, creator_id } = workout;
+async function POST(request) {
+    const body = await request.json();
+    const { workout_name, creator_id } = body;
 
     try {
         if (!workout_name.length || !creator_id) {
@@ -85,14 +87,16 @@ async function postWorkout(workout) {
 }
 
 // delete workout from list of workouts
-async function deleteWorkout(id) {
+async function DELETE(request) {
+    const workout_id = Number(headers().get('workout_id'));
+
     try {
-        const check = await checkWorkoutExists(id)
+        const check = await checkWorkoutExists(workout_id)
         if (check) { return check }
 
         const deletedWorkout = await prisma.workouts.delete({
             where: {
-                workout_id: id
+                workout_id: workout_id
             }
         })
 
@@ -104,4 +108,4 @@ async function deleteWorkout(id) {
 }
 
 
-module.exports = { GET, getWorkoutsByCreatorId, postWorkout, deleteWorkout, checkUserExists }
+module.exports = { GET, getWorkoutsByCreatorId, POST, DELETE, checkUserExists }

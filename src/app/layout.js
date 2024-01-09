@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <div className="bg-platinum min-h-screen pt-24 pb-12">{children}</div>
+        <div className="bg-platinum min-h-screen pt-10 pb-12">{children}</div>
         <Footer />
       </body>
     </html>

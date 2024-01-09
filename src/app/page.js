@@ -5,7 +5,7 @@ import { Title } from "./components/General/Title";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export default function Home() {
 
   return (
     <main>
-        <Title text={"Home"}/>
         <HomePostContainer posts={posts}/>
     </main>
   );

@@ -8,42 +8,16 @@ async function GET() {
     return NextResponse.json(users, {status: 200})
 }
 
-async function postUser(user) {
-    const { username, password } = user;
-    const hash = passwordHash.generate(password)
+async function POST (req, res) {
+    const body = await req.json()
+    const hash = passwordHash.generate(body.password)
     const newUser = await prisma.users.create({
         data: {
-            username,
+            username: body.username,
             password: hash
         }
     })
     return NextResponse.json({newUser}, {status: 201})
-}
-
-async function loginUser(loginData){
-    if(!loginData.password || !loginData.username){
-        return NextResponse.json('Missing Data', {status: 400})
-    }
-
-    if(!isNaN(parseInt(loginData.password)) || !isNaN(parseInt(loginData.username))){
-        return NextResponse.json('Incorrect Data Type', {status: 400})
-    }
-
-    const users = await prisma.users.findUnique({
-        where: {
-            username: loginData.username
-        }
-    })
-    if(!users){
-        return NextResponse.json('Incorrect Username', {status: 404})
-    }
-
-    if(!passwordHash.verify(loginData.password,users.password)){
-        return NextResponse.json('Incorrect Password', {status: 404})
-    }
-
-    return NextResponse.json(users, {status: 200})
-    
 }
 
 async function fetchUserByUsername (username) {
@@ -95,4 +69,4 @@ async function patchUserByName (username, patchData){
     return NextResponse.json(users, {status: 200})
 }
 
-module.exports = {GET, postUser, loginUser, fetchUserByUsername, patchUserByName}
+module.exports = {GET, POST, fetchUserByUsername, patchUserByName}
