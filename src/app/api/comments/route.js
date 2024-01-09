@@ -32,4 +32,4 @@ async function POST (commentData){
 
 const postComment = POST
 
-module.exports = {postComment}
+module.exports = {postComment, POST}
