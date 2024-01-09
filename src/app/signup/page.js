@@ -46,7 +46,7 @@ export default function SignUp() {
                 <label htmlFor="username" className='text-DeepPurple'>Username:</label>
                 <input type="text" value={username} name="username" id="username" className='text-black-200 mt-5 mb-5 p-2' onChange={handleUsername} placeholder='Username...'/>
                 <label htmlFor="password" className='text-DeepPurple'>Password:</label>
-                <input type="text" value={password} name="password" id="password" className='text-black-200 mt-5 mb-5 p-2' onChange={handlePassword} placeholder='Password...'/>
+                <input type="password" value={password} name="password" id="password" className='text-black-200 mt-5 mb-5 p-2' onChange={handlePassword} placeholder='Password...'/>
                 <button>Sign Up</button>
             </form>
             <Link href={'/login'}>
