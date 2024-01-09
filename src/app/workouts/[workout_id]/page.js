@@ -1,9 +1,9 @@
 'use client'
-import ExerciseCard from "@/app/components/exercises/exerciseCard";
+import ExerciseCard from "@/app/components/workouts/exerciseCard";
 import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { ErrorPage } from '../../components/General/ErrorPage'
-import ExerciseModal from "@/app/components/exercises/ExerciseModal";
+import ExerciseModal from "@/app/components/workouts/ExerciseModal";
 import Link from "next/link";
 import { Title } from "@/app/components/General/Title";
 
