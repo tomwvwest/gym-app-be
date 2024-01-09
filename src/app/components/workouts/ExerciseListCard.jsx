@@ -61,6 +61,7 @@ export default function ExerciseListCard ({ exercisesInWorkout, setExercisesInWo
             {isLoading ? <p>Loading...</p> : null}
             <h2>{exercise.name}</h2>
             <p>{exercise.muscle}</p>
+            <p>{exercise.difficulty}</p>
             <button onClick={handleAddToWorkout} className="border rounded-lg px-2 py-1">Add to Workout</button>
             {postWorkoutError ? <p>Error adding exercise to workout. Please try again.</p> : null}
             {getExerciseError ? <p>Error finding exercise. Please try again.</p>: null}
