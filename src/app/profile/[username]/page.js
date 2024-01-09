@@ -2,27 +2,28 @@
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { Title } from "@/app/components/General/Title";
 import { useEffect, useState } from "react";
+import { useUserContext } from "@/app/contexts/userContext";
 
 export default function ProfilePage(req) {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useUserContext();
   const [isLoading, setIsLoading] = useState(true);
   const username = req.params.username;
 
-  useEffect(() => {
-    fetch(`/api/users`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((usersData) => {
-        const userData = usersData.find((user) => user.username === username);
-        setUser(userData);
-        setIsLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/api/users`)
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((usersData) => {
+  //       const userData = usersData.find((user) => user.username === username);
+  //       setUser(userData);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
 
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSkeleton />;
+  // }
 
   return (
     <>

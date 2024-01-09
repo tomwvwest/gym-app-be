@@ -4,8 +4,11 @@ import {useState} from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useUserContext } from "@/app/contexts/userContext";
 
 export default function Login() {
+
+    const { user, setUser } = useUserContext();
 
     const router = useRouter();
     
@@ -28,9 +31,12 @@ export default function Login() {
         }
 
         axios.post('/api/users/login', postData).then(({data}) => {
-            sessionStorage.setItem('user_id', JSON.stringify(data.user_id))
-            sessionStorage.setItem('username', JSON.stringify(data.username))
-            sessionStorage.setItem('image', JSON.stringify(data.image_url))
+            const loggedInUser = {
+                username: data.username,
+                user_id: data.user_id,
+                image_url: data.image_url
+            }
+            setUser(loggedInUser)
         })
 
         setUsername('')
@@ -39,9 +45,6 @@ export default function Login() {
         router.push('/')
 
     }
-
-    const usernameGet = sessionStorage.getItem('username')
-    console.log(usernameGet)
     
     return (
         <section className='min-h-screen flex justify-evenly flex-col items-center'>

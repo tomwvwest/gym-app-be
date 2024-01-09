@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { CommentsContainer } from "./CommentsContainer";
 import Link from "next/link";
 import axios from 'axios'
+import { useUserContext } from "@/app/contexts/userContext";
 
 export const PostContainer = ({ post, isNotLastChild }) => {
-  const [user, setUser] = useState(null);
+  const [postUser, setPostUser] = useState(null);
   const [comments, setComments] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newComment, setNewComments] = useState('')
   const [showAddComments, setShowAddComments] = useState(false)
+  const { user, setUser } = useUserContext();
 
   useEffect(() => {
     Promise.all([
@@ -20,10 +22,10 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         return Promise.all([res.json(), res2.json()]);
       })
       .then(([userData, commentsData]) => {
-        setUser(userData);
+        setPostUser(userData);
         setComments(commentsData);
         setIsLoading(false);
-        if(sessionStorage.getItem('user_id')){
+        if(user.username){
           setShowAddComments(true)
         }
       });
@@ -48,12 +50,18 @@ export const PostContainer = ({ post, isNotLastChild }) => {
     setNewComments(e.target.value)
   } 
 
+  function getCurrentTimestamp() {
+    const currentDate = new Date();
+    return currentDate.toISOString(); // This will return the timestamp in ISO format
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
     const commentData = {
       post_id: post.post_id,
       body: newComment,
-      user_id: parseInt(sessionStorage.getItem('user_id'))
+      user_id: user.user_id,
+      completed_at: getCurrentTimestamp()
     }
     setComments((prevVals) => [...prevVals, commentData])
     axios.post('/api/comments', commentData).then((res)=>{
@@ -68,8 +76,8 @@ export const PostContainer = ({ post, isNotLastChild }) => {
           <img src="image.png"></img>
         </div>
         <div className="ml-3 opacity-50 text-sm text-DeepPurple">
-          <Link href={`/profile/${user.username}`} className="flex w-fit">
-            <p className="italic hover:underline">{user.username}</p>
+          <Link href={`/profile/${postUser.username}`} className="flex w-fit">
+            <p className="italic hover:underline">{postUser.username}</p>
           </Link>
           <p>{convertToDateString(post.completed_at).time} | {convertToDateString(post.completed_at).date}</p>
         </div>
@@ -81,7 +89,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
         <hr className="mt-1 opacity-40" />
         {showAddComments ? 
         <form onSubmit={handleSubmit} className='flex justify-center items-center pt-3'>
-          <input type="text" className='text-DeepPurple p-1 rounded-lg w-full' name="comment" id="comment" value={newComment} onChange={handleNewComment} placeholder='New Comment...'/>
+          <input type="text" className='text-DeepPurple p-1 rounded-lg w-full' name="comment" id="comment" value={newComment} onChange={handleNewComment} placeholder='New Comment...' required/>
           <button><img
               src="white-back-arrow.png"
               className={`ml-1 -rotate-180`}/></button>
