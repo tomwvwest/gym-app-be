@@ -17,4 +17,4 @@ async function POST(newLoggedWorkout) {
 
 const postLoggedWorkout = POST
 
-module.exports = { postLoggedWorkout, getCurrentId };
+module.exports = { postLoggedWorkout, getCurrentId, POST };
