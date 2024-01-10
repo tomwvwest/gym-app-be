@@ -5,6 +5,7 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
     const [isRemoving, setIsRemoving] = useState(false);
     const [isRemoved, setIsRemoved] = useState(false);
     const [removeError, setRemoveError] = useState(null);
+    const [instructions, setInstructions] = useState({class: 'hidden', symbol: '▶'});
 
     const handleRemoveFromWorkout = () => {
         setIsRemoving(true);
@@ -35,16 +36,35 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
             }, 3000)
         })
     }
+
+    const handleClickInstructions = () => {
+        instructions.class === '' ? setInstructions({class: 'hidden', symbol: '▶'}) : setInstructions({class: '', symbol: '▼'})
+
+    }
     
     if (workoutExercisesLoading) return <LoadingSkeleton />
 
     return (
-        <section>
+        <section onClick={handleClickInstructions} className='cursor-pointer'>
             {isRemoved ? <p>Exercise removed.</p> : null}
             {workoutExercisesLoading ? <LoadingSkeleton /> : null}
-            <h2>{exercise.name}</h2>
-            <p>{exercise.muscle}</p>
-            <button onClick={handleRemoveFromWorkout} className="border rounded-lg px-2 py-1">Remove</button>
+            <div className='flex justify-between'>
+                <h2 className='font-bold'>{exercise.name}</h2>
+                <div>
+                    <button onClick={handleRemoveFromWorkout} className="border rounded-lg px-2 py-1">Remove</button>
+                </div>
+            </div>
+            <div className="flex text-sm font-light">
+                <p className="pr-2">{exercise.muscle}</p>
+                <p className="pr-2">{exercise.difficulty}</p>
+                <p className="pr-2">{exercise.equipment}</p>
+                <div>
+                    <p className='transition ease-in duration-100'>{instructions.symbol}</p>
+                </div>
+            </div>
+            <div className={`${instructions.class}`}>
+                <span>{exercise.instructions}</span>
+            </div>
             {isRemoving ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
         </section>
     )

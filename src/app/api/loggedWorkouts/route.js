@@ -12,11 +12,14 @@ const { handlePsqlErrors } = require("../../../../_utils/errors");
 //   });
 //   return NextResponse.json(currentId, { status: 200 });
 // }
-async function POST(newLoggedWorkout) {
+
+async function POST(req, res) {
+  const body = await req.json()
   try {
-    const loggedWorkout = await prisma.loggedWorkouts.create({
-      data: newLoggedWorkout,
+  const loggedWorkout = await prisma.loggedWorkouts.create({
+      data: body,
     });
+    console.log(body)
     return NextResponse.json(loggedWorkout, { status: 201 });
   } catch (error) {
     console.log(error);

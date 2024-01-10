@@ -7,7 +7,7 @@ export const ChosenExercisesContainer = ({
   setWorkoutData
 }) => {
   if (!chosenExercises.length) {
-    return <div className="m-5 mt-10 text-2xl">None selected</div>;
+    return <div className="m-5 mt-10 text-2xl">Add an exercise...</div>;
   }
 
 
