@@ -6,7 +6,9 @@ async function GET() {
   return NextResponse.json(exercises, { status: 200 });
 }
 
-async function POST(newExercise) {
+async function POST(request) {
+  const body = await request.json()
+  const { newExercise } = body;
   if (
     !newExercise.name ||
     !newExercise.type ||
@@ -17,6 +19,7 @@ async function POST(newExercise) {
   ) {
     return NextResponse.json("Missing Data", { status: 400 });
   }
+
   const exercise = await prisma.exercises.create({
     data: newExercise
   })
