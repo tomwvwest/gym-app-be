@@ -20,6 +20,10 @@ export default function SingleExercisePage({params}) {
             })
         }
 
+        const fetchSessions = async ()=>{
+            fetch(`/api/loggedWorkouts?exercise_id=${exercise_id}&user_id=${1}`)
+        }
+
         fetchExercise()
         }, [])
 
