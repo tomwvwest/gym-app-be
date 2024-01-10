@@ -3,6 +3,7 @@ import { ListOfExercises } from "./PickExercises";
 import { ChosenExercisesContainer } from "./ChosenExercisesContainer";
 import { LoadingSkeleton } from "../General/LoadingSkeleton";
 import { useRouter } from "next/navigation";
+import { PostInput } from "./PostInput";
 
 export const LogWorkoutContainer = () => {
   const router = useRouter();
@@ -16,6 +17,9 @@ export const LogWorkoutContainer = () => {
   const [isPostError, setIsPostError] = useState(false);
   const [workoutData, setWorkoutData] = useState({});
   const [numOfSessions, setNumOfSessions] = useState(null);
+  const [showPostDetails, setShowPostDetails] = useState(false);
+  const [title, setTitle] = useState(null);
+  const [description, setDescription] = useState(null);
 
   useEffect(() => {
     Promise.all([fetch("/api/exercises"), fetch("/api/checkLoggedWorkout")])
@@ -33,7 +37,7 @@ export const LogWorkoutContainer = () => {
     setIsExerciseShowing(!isExerciseShowing);
   }
 
-  const handleLogWorkout = () => {
+  const handleLogWorkout = async () => {
     setisLogLoading(true);
     const workoutId = 1;
     const userId = 1;
@@ -69,6 +73,27 @@ export const LogWorkoutContainer = () => {
     }
   };
 
+  const handlePostWorkout = async () => {
+    await handleLogWorkout();
+    const newPost = {
+      session_name : title,
+      description : description,
+      session_id : numOfSessions-1,
+      user_id : 1
+    }
+    fetch(`/api/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPosts)
+    }).then((res) => console.log(res));
+  }
+
+  const handleShowPostDetails = () => {
+    setShowPostDetails(!showPostDetails);
+  };
+
   if (isLoading) return <LoadingSkeleton />;
 
   return (
@@ -99,11 +124,35 @@ export const LogWorkoutContainer = () => {
         >
           Log Workout
         </button>
-        <button className="border border-DeepPurple p-1 ml-4 rounded bg-LightGreen text-platinum">
-          Log & Post
+        <button
+          className="border border-DeepPurple p-1 ml-4 rounded bg-LightGreen text-platinum"
+          onClick={handleShowPostDetails}
+        >
+          Create a Post
         </button>
-        <p className={`ml-4 italic text-lg ${isLogged ? 'text-LightGreen': null} ${isPostError ? 'text-Red': null}`}>{isLogLoading ? "Logging..." : (isLogged ? 'Success' : (isPostError ? 'Error - try again' : null))}</p>
+        <p
+          className={`ml-4 italic text-lg ${
+            isLogged ? "text-LightGreen" : null
+          } ${isPostError ? "text-Red" : null}`}
+        >
+          {isLogLoading
+            ? "Logging..."
+            : isLogged
+            ? "Success"
+            : isPostError
+            ? "Error - try again"
+            : null}
+        </p>
       </div>
+
+      {!showPostDetails ? (
+        <div className="flex mt-5 items-center">
+          <PostInput setTitle={setTitle} setDescription={setDescription} />
+          <button className="border border-DeepPurple p-1 ml-4 rounded bg-LightGreen text-platinum" onClick={handlePostWorkout}>
+            Post
+          </button>
+        </div>
+      ) : null}
 
       <div className="z-1">
         <ChosenExercisesContainer
