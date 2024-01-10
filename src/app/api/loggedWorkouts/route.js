@@ -1,4 +1,4 @@
-const { NextResponse } = require("next/server");
+const { NextResponse, NextRequest } = require("next/server");
 const { prisma } = require("../../../../lib/prisma");
 const { handlePsqlErrors } = require("../../../../_utils/errors");
 // const { getCurrentId } = require("../../../../_utils/checkCurrentLoggedWorkoutId");
@@ -12,6 +12,7 @@ const { handlePsqlErrors } = require("../../../../_utils/errors");
 //   });
 //   return NextResponse.json(currentId, { status: 200 });
 // }
+
 async function POST(req, res) {
   const body = await req.json()
   try {
@@ -26,4 +27,37 @@ async function POST(req, res) {
   }
 }
 
-module.exports = { POST };
+async function GET(req) {
+  const nextRequestObject = {
+    [Symbol("state")]: {
+      url: new URL(req.url),
+    },
+  };
+  const stateSymbol = Object.getOwnPropertySymbols(nextRequestObject)[0];
+  const searchParams = nextRequestObject[stateSymbol].url.searchParams;
+  console.log(searchParams);
+
+  const userId = parseInt(searchParams.get("user_id"));
+  const exerciseId = parseInt(searchParams.get("exercise_id"));
+
+  if (userId && exerciseId) {
+    sessions = await prisma.loggedWorkouts.findMany({
+      where: {
+        user_id: userId,
+        exercise_id: exerciseId,
+      },
+    });
+  } else if (userId) {
+    sessions = await prisma.loggedWorkouts.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+  } else {
+    sessions = await prisma.loggedWorkouts.findMany({});
+  }
+
+  return NextResponse.json(sessions, { status: 200 });
+}
+
+module.exports = { POST, GET };
