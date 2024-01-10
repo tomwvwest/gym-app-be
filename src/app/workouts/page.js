@@ -24,7 +24,14 @@ export default function WorkoutsPage() {
       return res.json()
     })
     .then((data) => {
-      setWorkouts(data)
+      if(!user){
+        setWorkouts([])
+      }else{
+        const workoutData = data.filter(
+          (workout) => workout.creator_id === user.user_id
+        );
+        setWorkouts(workoutData)
+      }
     })
     .catch((error) => {
       setIsError(error)
