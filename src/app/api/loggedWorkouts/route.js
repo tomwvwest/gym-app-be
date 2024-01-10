@@ -19,7 +19,6 @@ async function POST(req, res) {
   const loggedWorkout = await prisma.loggedWorkouts.create({
       data: body,
     });
-    console.log(body)
     return NextResponse.json(loggedWorkout, { status: 201 });
   } catch (error) {
     console.log(error);
@@ -35,12 +34,12 @@ async function GET(req) {
   };
   const stateSymbol = Object.getOwnPropertySymbols(nextRequestObject)[0];
   const searchParams = nextRequestObject[stateSymbol].url.searchParams;
-  console.log(searchParams);
 
   const userId = parseInt(searchParams.get("user_id"));
   const exerciseId = parseInt(searchParams.get("exercise_id"));
 
   if (userId && exerciseId) {
+    console.log('yes')
     sessions = await prisma.loggedWorkouts.findMany({
       where: {
         user_id: userId,
