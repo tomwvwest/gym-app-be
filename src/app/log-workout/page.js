@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Title } from "../components/General/Title";
 import { LogWorkoutContainer } from "../components/Log/LogWorkoutContainer";
 import { useUserContext } from "../contexts/userContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WorkoutsDropDown } from "../components/Log/WorkoutsDropDown";
 
 export default function LogPage() {
@@ -12,6 +12,18 @@ export default function LogPage() {
   const [showWorkouts, setShowWorkouts] = useState(false);
   const [chosenExercises, setChosenExercises] = useState([]);
   const [chosenWorkout, setChosenWorkout] = useState({})
+  const [userWorkouts, setUserWorkouts] = useState([]);
+
+  useEffect(() => {
+    fetch(`/api/workouts`)
+      .then((res) => res.json())
+      .then((workoutData) => {
+        const workoutsByCreator =  workoutData.filter(
+          (workout) => workout.creator_id === user.user_id
+        );
+        setUserWorkouts(workoutsByCreator)
+      })
+  }, []);
 
   function handleShowWorkouts() {
     setShowWorkouts(!showWorkouts);
@@ -27,7 +39,7 @@ export default function LogPage() {
           className="ml-5 border p-1 rounded relative"
         >
           My Workouts {chosenWorkout.workout_name ? `: ${chosenWorkout.workout_name}` : null}
-          <>{showWorkouts ? <WorkoutsDropDown setChosenExercises={setChosenExercises} setChosenWorkout={setChosenWorkout} chosenWorkout={chosenWorkout}/> : null}</>
+          <>{showWorkouts? <WorkoutsDropDown setChosenExercises={setChosenExercises} setChosenWorkout={setChosenWorkout} chosenWorkout={chosenWorkout} userWorkouts={userWorkouts}/> : null}</>
         </button>
         <LogWorkoutContainer
           chosenExercises={chosenExercises}
