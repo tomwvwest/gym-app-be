@@ -7,7 +7,7 @@ import { useUserContext } from "@/app/contexts/userContext";
 
 export default function SingleExercisePage({params}) {
     const [currentExercise, setCurrentExercise] = useState({})
-    const [currentExerciseData, setCurrentExerciseData] = useState({})
+    const [currentExerciseData, setCurrentExerciseData] = useState([])
 
     const { user, setUser } = useUserContext();
     
@@ -45,15 +45,23 @@ export default function SingleExercisePage({params}) {
         fetchData()
         }, [exercise_id, user.user_id])
 
+        function convertToDateString(str){
+            const date = str.slice(8,10) + '/' + str.slice(5,7) + '/' + str.slice(0,4)
+            const time = str.slice(11,16)
+            
+            return {time, date}
+          }
+
+
   return (
     <>
     <Title text={`${currentExercise.name}`}/>
     {currentExerciseData.map((data)=>{
         return (
-            <div key={currentExerciseData.logged_id}>
-                <p>{data.completed_at}</p>
-                <p>{data.weight}</p>
-                <p>{data.reps}</p>
+            <div key={data.logged_id}>
+                <p>{convertToDateString(data.completed_at).time} | {convertToDateString(data.completed_at).date}</p>
+                <p>Weight: {data.weight}</p>
+                <p>Reps: {data.reps}</p>
             </div>
         )
     })}
