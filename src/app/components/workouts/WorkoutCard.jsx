@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from 'react';
+import styles from "@/app/style";
 
 export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted }) {
     const [isDeleting, setIsDeleting] = useState(false)
@@ -39,11 +40,17 @@ export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted }) {
     }
 
     return (
-        <div className="border p-3 mt-5 ml-2 rounded-xl w-full">
-            <Link href={`/workouts/${workout_id}`}>
-                <p className="text-lg">{workout.workout_name}</p>
-            </Link>
-            <button onClick={handleRemoveFromWorkout}>Delete</button>
+        <div className={`${styles.card} flex justify-between content-center w-full`}>
+            <div className="w-[70%] h-9 flex items-center">
+                <Link className="h-fit" href={`/workouts/${workout_id}`}>
+                    <p className={`${styles.cardTitle}`}>{workout.workout_name}</p>
+                </Link>
+            </div>
+            <div className="flex justify-end w-[30%] pr-2">
+                <button onClick={handleRemoveFromWorkout}>
+                    <img className="h-9" src="/delete.svg"></img>
+                </button>
+            </div>
             {isDeleting ? (removeError ? <p>Could not delete workout. Please try again.</p> : <p>Deleting...</p>): null}
         </div>
     )
