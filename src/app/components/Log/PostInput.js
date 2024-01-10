@@ -14,9 +14,9 @@ export const PostInput = ({setTitle, setDescription}) => {
   return (
     <>
       <p className="mr-2">Title: </p>
-      <input className="p-2" onChange={handleChangeTitle}></input>
-      <p className="ml-4 mr-2">Description: </p>
-      <input className="p-2" onChange={handleChangeDescription}></input>
+      <input className="p-2 focus:outline-none rounded-lg" onChange={handleChangeTitle}></input>
+      <p className="ml-10 mr-2">Description: </p>
+      <input className="p-2 focus:outline-none rounded-lg w-96" onChange={handleChangeDescription}></input>
     </>
   );
 };

@@ -6,23 +6,25 @@ async function GET() {
     return NextResponse.json(posts, {status: 200})
 }
 
-async function POST(newPost) {
-    if(!newPost.session_name || !newPost.description || !newPost.session_id || !newPost.user_id){
+async function POST(req, res) {
+    const body = await req.json()
+
+    if(!body.session_name || !body.description || !body.session_id || !body.user_id){
         return NextResponse.json('Missing Data', {status: 400})
     }
-    if(!isNaN(parseInt(newPost.session_name)) || !isNaN(parseInt(newPost.description)) || isNaN(parseInt(newPost.session_id)) || isNaN(parseInt(newPost.user_id))){
+    if(!isNaN(parseInt(body.session_name)) || !isNaN(parseInt(body.description)) || isNaN(parseInt(body.session_id)) || isNaN(parseInt(body.user_id))){
         return NextResponse.json('Incorrect Data Type', {status: 400})
     }
     const user = await prisma.users.findUnique({
         where:{
-            user_id: newPost.user_id
+            user_id: body.user_id
         }
     })
     if(!user){
         return NextResponse.json('User not found', {status: 404})
     }
     const posts = await prisma.posts.create({
-        data: newPost
+        data: body
     })
     return NextResponse.json(posts, {status: 201})
 }

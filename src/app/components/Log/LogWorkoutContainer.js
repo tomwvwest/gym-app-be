@@ -4,11 +4,11 @@ import { ChosenExercisesContainer } from "./ChosenExercisesContainer";
 import { LoadingSkeleton } from "../General/LoadingSkeleton";
 import { useRouter } from "next/navigation";
 import { PostInput } from "./PostInput";
+import { useUserContext } from "@/app/contexts/userContext";
 
-export const LogWorkoutContainer = () => {
+export const LogWorkoutContainer = ({chosenExercises, setChosenExercises, chosenWorkout}) => {
   const router = useRouter();
-
-  const [chosenExercises, setChosenExercises] = useState([]);
+  const {user, setUser} = useUserContext(); 
   const [allExercises, setAllExercises] = useState([]);
   const [isExerciseShowing, setIsExerciseShowing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,10 +37,11 @@ export const LogWorkoutContainer = () => {
     setIsExerciseShowing(!isExerciseShowing);
   }
 
-  const handleLogWorkout = async () => {
+  const handleLogWorkout = async (e) => {
     setisLogLoading(true);
-    const workoutId = 1;
-    const userId = 1;
+    const isLog = e.target.textContent === 'Log Workout'
+    const workoutId = chosenWorkout.workout_id;
+    const userId = user.user_id;
 
     for (const exerciseId in workoutData) {
       Promise.all(
@@ -66,28 +67,31 @@ export const LogWorkoutContainer = () => {
         .then(() => {
           setisLogLoading(false);
           setIsLogged(true);
-          setTimeout(() => router.push("/"), 1000);
+          isLog ? setTimeout(() => router.push("/"), 1000) : null;
         })
         .then(() => {})
         .catch(() => setIsPostError(true));
     }
   };
 
-  const handlePostWorkout = async () => {
-    await handleLogWorkout();
+  const handlePostWorkout = async (e) => {
+    await handleLogWorkout(e);
+    const userId = user.user_id
     const newPost = {
       session_name : title,
       description : description,
-      session_id : numOfSessions-1,
-      user_id : 1
+      session_id : parseInt(numOfSessions),
+      user_id : userId
     }
     fetch(`/api/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newPosts)
-    }).then((res) => console.log(res));
+      body: JSON.stringify(newPost)
+    }).then(() => {
+      setTimeout(() => router.push("/"), 1000);
+    });
   }
 
   const handleShowPostDetails = () => {
@@ -100,7 +104,7 @@ export const LogWorkoutContainer = () => {
     <div className=" my-7 mx-16">
       <div className="flex items-center">
         <button
-          className="border p-1 rounded relative"
+          className="border p-1 rounded relative z-1"
           onClick={handleAddExerciseButton}
         >
           Add Exercise
@@ -145,12 +149,13 @@ export const LogWorkoutContainer = () => {
         </p>
       </div>
 
-      {!showPostDetails ? (
-        <div className="flex mt-5 items-center">
+      {showPostDetails ? (
+        <div className={`flex mt-5 items-center`}>
           <PostInput setTitle={setTitle} setDescription={setDescription} />
-          <button className="border border-DeepPurple p-1 ml-4 rounded bg-LightGreen text-platinum" onClick={handlePostWorkout}>
+          <button className={`border border-DeepPurple p-1 ml-4 rounded bg-LightGreen text-platinum ${!chosenExercises.length || !title || !description ? "opacity-30" : null}`} onClick={handlePostWorkout} disabled={!chosenExercises.length || !title || !description}>
             Post
           </button>
+          <p className="text-Red italic ml-2">{!title || !description ? 'Please provide both a title and description' : null}</p>
         </div>
       ) : null}
 
