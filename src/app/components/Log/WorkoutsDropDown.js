@@ -9,7 +9,7 @@ export const WorkoutsDropDown = ({
   userWorkouts,
 }) => {
   return (
-    <div className="absolute border rounded-xl w-[60vh] overflow-auto -bottom-11 z-1000 bg-platinum">
+    <div className="absolute border rounded-xl w-[60vh] overflow-auto -bottom-[85px] z-[1000] bg-platinum">
       {!userWorkouts.length ? (
         <>No Saved Workouts</>
       ) : (
@@ -18,7 +18,7 @@ export const WorkoutsDropDown = ({
             <div key={workout.workout_id}>
               <WorkoutDropDown
                 workout={workout}
-                isLast={index === userWorkouts.length}
+                isLast={index === userWorkouts.length-1}
                 setChosenExercises={setChosenExercises}
                 setChosenWorkout={setChosenWorkout}
                 chosenWorkout={chosenWorkout}

@@ -2,6 +2,7 @@ import { PostContainer } from "./PostContainer";
 import { Title } from "../General/Title";
 
 export const HomePostContainer = ({ posts }) => {
+  
   return (
     <section >
       <Title text={"Home"}/>

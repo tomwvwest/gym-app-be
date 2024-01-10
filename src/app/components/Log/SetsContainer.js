@@ -31,7 +31,7 @@ export const SetsContainer = ({ sets, setSets }) => {
           Add Set
         </button>
         <button
-          className={`ml-5 border rounded p-1 transition-[0.3s] ${
+          className={`ml-5 border rounded p-1 transition-[0.3s] z-[10] ${
             sets.length === 1 ? "opacity-30" : null
           }`}
           onClick={handleDeleteSet}
