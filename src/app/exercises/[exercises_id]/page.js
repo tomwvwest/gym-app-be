@@ -1,10 +1,16 @@
 'use client'
 import { Title } from "../../components/General/Title";
 import { useState, useEffect } from "react";
+import { useUserContext } from "@/app/contexts/userContext";
+
 
 
 export default function SingleExercisePage({params}) {
     const [currentExercise, setCurrentExercise] = useState({})
+    const [currentExerciseData, setCurrentExerciseData] = useState({})
+
+    const { user, setUser } = useUserContext();
+    
 
     const exercise_id = params.exercises_id;
 
@@ -15,21 +21,35 @@ export default function SingleExercisePage({params}) {
                 return res.json()
             })
             .then((data)=>{
-                console.log(data)
                 setCurrentExercise(data)
             })
         }
 
         const fetchSessions = async ()=>{
-            fetch(`/api/loggedWorkouts?exercise_id=${exercise_id}&user_id=${1}`)
+            fetch(`/api/loggedWorkouts?exercise_id=${exercise_id}&user_id=${user.user_id}`)
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                setCurrentExerciseData(data)
+                console.log(currentExerciseData, "holaa")
+            })
         }
 
-        fetchExercise()
-        }, [])
+        const fetchData = async () => {
+            
+            fetchExercise();
+            fetchSessions();
+        }
+
+        fetchData()
+        }, [exercise_id, user.user_id])
 
   return (
     <>
     <Title text={`${currentExercise.name}`}/>
+    <p>{`${currentExerciseData[1].weight}`}</p>
+    
     </>
   );
 }
