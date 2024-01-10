@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
+import styles from '@/app/style';
 
 export default function ExerciseCard({ workout_id, exercise, setExercises, workoutExercisesLoading }) {
     const [isRemoving, setIsRemoving] = useState(false);
     const [isRemoved, setIsRemoved] = useState(false);
     const [removeError, setRemoveError] = useState(null);
-    const [instructions, setInstructions] = useState({class: 'hidden', symbol: '▶'});
+    const [instructions, setInstructions] = useState({class: 'hidden', symbol: '/caret-right.svg'});
 
     const handleRemoveFromWorkout = () => {
         setIsRemoving(true);
@@ -38,34 +39,38 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
     }
 
     const handleClickInstructions = () => {
-        instructions.class === '' ? setInstructions({class: 'hidden', symbol: '▶'}) : setInstructions({class: '', symbol: '▼'})
+        instructions.class === '' ? setInstructions({class: 'hidden', symbol: '/caret-right.svg'}) : setInstructions({class: '', symbol: '/caret-down.svg'})
 
     }
     
     if (workoutExercisesLoading) return <LoadingSkeleton />
 
     return (
-        <section onClick={handleClickInstructions} className='cursor-pointer'>
-            {isRemoved ? <p>Exercise removed.</p> : null}
-            {workoutExercisesLoading ? <LoadingSkeleton /> : null}
+        <section onClick={handleClickInstructions} className='cursor-pointer flex-column'>
             <div className='flex justify-between'>
-                <h2 className='font-bold'>{exercise.name}</h2>
-                <div>
-                    <button onClick={handleRemoveFromWorkout} className="border rounded-lg px-2 py-1">Remove</button>
+                <div className='w-[80%] px-2'>
+                    {isRemoved ? <p>Exercise removed.</p> : null}
+                    {workoutExercisesLoading ? <LoadingSkeleton /> : null}
+                    <h2 className={`${styles.subtitle}`}>{exercise.name}</h2>
+                    <div className="flex text-sm font-light h-5">
+                        <p className="pr-2">{exercise.muscle}</p>
+                        <p className="pr-2">{exercise.difficulty}</p>
+                        <p className="pr-2 hidden md:flex lg:flex">{exercise.equipment}</p>
+                        <div className='h-full'>
+                            <img src={instructions.symbol} className='h-full'></img>
+                        </div>
+                    </div>
+                    {isRemoving ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
+                </div>
+                <div className='flex justify-center w-[20%]'>
+                    <button onClick={handleRemoveFromWorkout} className="h-full">
+                        <img className="h-9" src='/delete.svg'></img>
+                    </button>
                 </div>
             </div>
-            <div className="flex text-sm font-light">
-                <p className="pr-2">{exercise.muscle}</p>
-                <p className="pr-2">{exercise.difficulty}</p>
-                <p className="pr-2">{exercise.equipment}</p>
-                <div>
-                    <p className='transition ease-in duration-100'>{instructions.symbol}</p>
-                </div>
+            <div className={`${instructions.class} pt-2`}>
+                    <span>{exercise.instructions}</span>
             </div>
-            <div className={`${instructions.class}`}>
-                <span>{exercise.instructions}</span>
-            </div>
-            {isRemoving ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
         </section>
     )
 }

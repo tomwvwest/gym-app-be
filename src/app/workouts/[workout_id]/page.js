@@ -1,11 +1,11 @@
 'use client'
-import ExerciseCard from "@/app/components/exercises/ExerciseCard";
+import ExerciseCard from "@/app/components/workouts/ExerciseCard";
 import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import { ErrorPage } from '../../components/General/ErrorPage'
 import ExerciseModal from "../../components/workouts/ExerciseModal";
 import Link from "next/link";
-import { Title } from "@/app/components/General/Title";
+import styles from "@/app/style";
 
 export default function Workout({ params }) {
     const [exercisesInWorkout, setExercisesInWorkout] = useState([]);
@@ -70,16 +70,19 @@ export default function Workout({ params }) {
     if (Error) return <ErrorPage error={Error}/>
 
     return (
-        <main>
-            <Title text={`Workout ${workout_id}`}/>
-            <div className="w-fit">
-                <Link href="/workouts"><p>All Workouts</p></Link>
+        <main className={`${styles.bodySection}`}>
+            <h1 className={styles.title}>{`Workout ${workout_id}`}</h1>
+            <div className="flex text-md font-bold h-6 rounded-lg mb-5">
+                <Link href="/workouts" className="flex">
+                    <img src="/caret-left.svg" className="h-full"></img>
+                    <p className="w-fit">All Workouts</p>
+                </Link>
             </div>
             <ul>
                 {!exercisesInWorkout.length ? <p>Add an exercise!</p> : null}
                 {exercisesInWorkout.map(((exercise) => {
                     return (
-                        <li key={exercise.exercise_id} className="border p-4 m-2 rounded-lg">
+                        <li key={exercise.exercise_id} className="border-b p-3 my-2">
                             <ExerciseCard
                                 workout_id={workout_id}
                                 exercise={exercise}
@@ -89,7 +92,7 @@ export default function Workout({ params }) {
                     )
                 }))}
             </ul>
-            <button className="border rounded-lg px-2 py-1" onClick={handleShowExercises}>Add Exercise</button>
+            <button className={`${styles.button}`} onClick={handleShowExercises}>Add Exercise</button>
             <ExerciseModal 
                 setExercisesInWorkout={setExercisesInWorkout}
                 exercisesInWorkout={exercisesInWorkout}

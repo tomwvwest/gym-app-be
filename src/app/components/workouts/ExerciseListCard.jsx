@@ -57,14 +57,23 @@ export default function ExerciseListCard ({ exercisesInWorkout, setExercisesInWo
     }
 
     return (
-        <section>
-            {isLoading ? <p>Loading...</p> : null}
-            <h2>{exercise.name}</h2>
-            <p>{exercise.muscle}</p>
-            <p>{exercise.difficulty}</p>
-            <button onClick={handleAddToWorkout} className="border rounded-lg px-2 py-1">Add to Workout</button>
-            {postWorkoutError ? <p>Error adding exercise to workout. Please try again.</p> : null}
-            {getExerciseError ? <p>Error finding exercise. Please try again.</p>: null}
+        <section className="flex">
+            <div className="w-[80%] p-1">
+                {isLoading ? <p>Loading...</p> : null}
+                <h2 className='font-bold'>{exercise.name}</h2>
+                <div className="flex text-sm font-light h-5">
+                    <p className="pr-2">{exercise.muscle}</p>
+                    <p className="pr-2">{exercise.difficulty}</p>
+                    <p className="pr-2 hidden md:flex lg:flex">{exercise.equipment}</p>
+                </div>
+                {postWorkoutError ? <p>Error adding exercise to workout. Please try again.</p> : null}
+                {getExerciseError ? <p>Error finding exercise. Please try again.</p>: null}
+            </div>
+            <div className='h-full flex justify-center w-[20%]'>
+                <button onClick={handleAddToWorkout}>
+                    <img src='/add.svg'></img>
+                </button>
+            </div>
         </section>
     )
 }
