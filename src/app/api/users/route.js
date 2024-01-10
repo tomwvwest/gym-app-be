@@ -10,7 +10,19 @@ async function GET() {
 
 async function POST (req, res) {
     const body = await req.json()
+    if(!isNaN(parseInt(body.username))){
+        return NextResponse.json('Username must be a string', {status: 400})
+    }
     const hash = passwordHash.generate(body.password)
+    const currentUser = await prisma.users.findUnique({
+        where: {
+            username: body.username
+        }
+    })
+    console.log(currentUser)
+    if(currentUser){
+        return NextResponse.json('Username Taken', {status: 400})
+    }
     const newUser = await prisma.users.create({
         data: {
             username: body.username,
