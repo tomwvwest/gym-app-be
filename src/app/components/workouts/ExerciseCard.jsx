@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LoadingSkeleton } from "@/app/components/General/LoadingSkeleton";
 import styles from '@/app/style';
+import Link from "next/link";
 
 export default function ExerciseCard({ workout_id, exercise, setExercises, workoutExercisesLoading }) {
     const [isRemoving, setIsRemoving] = useState(false);
@@ -46,13 +47,15 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
     if (workoutExercisesLoading) return <LoadingSkeleton />
 
     return (
-        <section onClick={handleClickInstructions} className='cursor-pointer flex-column'>
+        <section className='cursor-pointer flex-column'>
             <div className='flex justify-between'>
                 <div className='w-[80%] px-2'>
                     {isRemoved ? <p>Exercise removed.</p> : null}
                     {workoutExercisesLoading ? <LoadingSkeleton /> : null}
-                    <h2 className={`${styles.subtitle}`}>{exercise.name}</h2>
-                    <div className="flex text-sm font-light h-5">
+                    <Link href={`/exercises/${exercise.exercise_id}`}>
+                        <h2 className={`${styles.subtitle}`}>{exercise.name}</h2>
+                    </Link>
+                    <div onClick={handleClickInstructions} className="flex text-sm font-light h-5">
                         <p className="pr-2">{exercise.muscle}</p>
                         <p className="pr-2">{exercise.difficulty}</p>
                         <p className="pr-2 hidden md:flex lg:flex">{exercise.equipment}</p>
@@ -62,7 +65,7 @@ export default function ExerciseCard({ workout_id, exercise, setExercises, worko
                     </div>
                     {isRemoving ? (removeError ? <p>Could not remove exercise. Please try again.</p> : <p>Removing...</p>) : null}
                 </div>
-                <div className='flex justify-center w-[20%]'>
+                <div className='flex justify-end w-[20%] pr-2'>
                     <button onClick={handleRemoveFromWorkout} className="h-full">
                         <img className="h-9" src='/delete.svg'></img>
                     </button>

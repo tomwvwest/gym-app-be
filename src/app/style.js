@@ -1,9 +1,10 @@
 const styles = {
-    exerciseCard: "border p-2 m-2 rounded-lg",
-    bodySection: "flex-col mx-10 w-min-[500px] w-max-[750px]",
+    card: "border p-2 mb-2 rounded-lg",
+    bodySection: "flex-col mx-10 max-w-[750px] w-[80%]",
     title: "pt-20 pb-2 font-extrabold text-3xl text-DeepPurple",
     subtitle: "pb-2 font-bold text-xl text-DeepPurple",
-    button: "rounded-lg px-2 py-1 mt-2 text-platinum bg-DeepPurple"
+    cardTitle: "font-bold text-2xl text-DeepPurple",
+    button: "rounded-lg p-3 mt-2 w-fit text-platinum bg-DeepPurple"
 }
 
 export default styles

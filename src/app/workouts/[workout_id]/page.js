@@ -70,38 +70,40 @@ export default function Workout({ params }) {
     if (Error) return <ErrorPage error={Error}/>
 
     return (
-        <main className={`${styles.bodySection}`}>
-            <h1 className={styles.title}>{`Workout ${workout_id}`}</h1>
-            <div className="flex text-md font-bold h-6 rounded-lg mb-5">
-                <Link href="/workouts" className="flex">
-                    <img src="/caret-left.svg" className="h-full"></img>
-                    <p className="w-fit">All Workouts</p>
-                </Link>
+        <main className={`flex justify-center`}>
+            <div className={`${styles.bodySection}`}>
+                <h1 className={styles.title}>{`Workout ${workout_id}`}</h1>
+                <div className="flex text-md font-bold h-6 rounded-lg mb-5">
+                    <Link href="/workouts" className="flex">
+                        <img src="/caret-left.svg" className="h-full"></img>
+                        <p className="w-fit">All Workouts</p>
+                    </Link>
+                </div>
+                <ul>
+                    {!exercisesInWorkout.length ? <p className="my-10 text-xl text-LightPurple">Add an exercise!</p> : null}
+                    {exercisesInWorkout.map(((exercise) => {
+                        return (
+                            <li key={exercise.exercise_id} className="border-b py-3 my-2">
+                                <ExerciseCard
+                                    workout_id={workout_id}
+                                    exercise={exercise}
+                                    setExercises={setExercisesInWorkout}
+                                    workoutExercisesLoading={workoutExercisesLoading}/>
+                            </li>
+                        )
+                    }))}
+                </ul>
+                <button className={`${styles.button}`} onClick={handleShowExercises}>Add Exercise</button>
+                <ExerciseModal 
+                    setExercisesInWorkout={setExercisesInWorkout}
+                    exercisesInWorkout={exercisesInWorkout}
+                    allExercises={allExercises}
+                    workout_id={workout_id}
+                    visible={open}
+                    onClose={() => {setOpen(false)}}
+                    fetchExercisesError={fetchExercisesError}
+                />
             </div>
-            <ul>
-                {!exercisesInWorkout.length ? <p>Add an exercise!</p> : null}
-                {exercisesInWorkout.map(((exercise) => {
-                    return (
-                        <li key={exercise.exercise_id} className="border-b p-3 my-2">
-                            <ExerciseCard
-                                workout_id={workout_id}
-                                exercise={exercise}
-                                setExercises={setExercisesInWorkout}
-                                workoutExercisesLoading={workoutExercisesLoading}/>
-                        </li>
-                    )
-                }))}
-            </ul>
-            <button className={`${styles.button}`} onClick={handleShowExercises}>Add Exercise</button>
-            <ExerciseModal 
-                setExercisesInWorkout={setExercisesInWorkout}
-                exercisesInWorkout={exercisesInWorkout}
-                allExercises={allExercises}
-                workout_id={workout_id}
-                visible={open}
-                onClose={() => {setOpen(false)}}
-                fetchExercisesError={fetchExercisesError}
-            />
         </main>
     )
 }
