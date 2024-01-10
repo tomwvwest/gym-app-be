@@ -40,7 +40,7 @@ export default function LogPage() {
   return (
     <>
       <Title text={"Log Workout"} />
-      <div>
+      <div className="ml-8">
         <button
           onClick={handleShowWorkouts}
           className="ml-5 border p-1 rounded relative"
