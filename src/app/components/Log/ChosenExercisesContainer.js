@@ -1,3 +1,4 @@
+import { useUserContext } from "@/app/contexts/userContext";
 import { ChosenExerciseContainer } from "./ChosenExerciseContainer";
 
 export const ChosenExercisesContainer = ({
