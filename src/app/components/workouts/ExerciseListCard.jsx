@@ -71,7 +71,7 @@ export default function ExerciseListCard ({ exercisesInWorkout, setExercisesInWo
             </div>
             <div className='h-full flex justify-center w-[20%]'>
                 <button onClick={handleAddToWorkout}>
-                    <img src='/add.svg'></img>
+                    <img className="h-full max-h-20" src='/add.svg'></img>
                 </button>
             </div>
         </section>

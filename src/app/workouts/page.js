@@ -82,7 +82,7 @@ export default function WorkoutsPage() {
         setWorkouts([...workouts, data.newWorkout])
       })
       .catch((error) => {
-        isError(error)
+        setIsError(error)
       })
       .finally(() => {
         setInputIsHidden(false)
