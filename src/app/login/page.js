@@ -5,6 +5,8 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useUserContext } from "@/app/contexts/userContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
 
@@ -14,6 +16,19 @@ export default function Login() {
     
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const notify = (message) => {
+        toast.error(message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      };
 
     const handleUsername = (e) => {
         setUsername(e.target.value)
@@ -37,13 +52,12 @@ export default function Login() {
                 image_url: data.image_url
             }
             setUser(loggedInUser)
-        })
-
+            router.push('/')
+        }).catch(({ response: { data } }) => {
+            notify(data)
+          });  
         setUsername('')
         setPassword('')
-
-        router.push('/')
-
     }
     
     return (
@@ -59,6 +73,18 @@ export default function Login() {
             <Link href={'/signup'}>
                 <h2 className="pt-3 pb-2 font-extrabold text-2xl text-DeepPurple mb-3">Sign Up</h2>
             </Link>
+            <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
         </section>
     )
 }

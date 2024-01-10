@@ -5,7 +5,6 @@ const passwordHash = require('password-hash')
 
 async function POST (req, res){
     const body = await req.json()
-    console.log(body)
     if(!body.password || !body.username){
         return NextResponse.json('Missing Data', {status: 400})
     }
