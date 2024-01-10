@@ -11,25 +11,32 @@ export default function LogPage() {
   const { user, setUser } = useUserContext();
   const [showWorkouts, setShowWorkouts] = useState(false);
   const [chosenExercises, setChosenExercises] = useState([]);
-  const [chosenWorkout, setChosenWorkout] = useState({})
+  const [chosenWorkout, setChosenWorkout] = useState({});
   const [userWorkouts, setUserWorkouts] = useState([]);
 
   useEffect(() => {
     fetch(`/api/workouts`)
       .then((res) => res.json())
       .then((workoutData) => {
-        const workoutsByCreator =  workoutData.filter(
+        const workoutsByCreator = workoutData.filter(
           (workout) => workout.creator_id === user.user_id
         );
-        setUserWorkouts(workoutsByCreator)
-      })
+        setUserWorkouts(workoutsByCreator);
+      });
   }, []);
 
   function handleShowWorkouts() {
     setShowWorkouts(!showWorkouts);
   }
 
-  if(!user.user_id) return <Link href="/login"><div className="ml-20 mt-24 text-2xl hover:underline">Click to Login</div></Link>;
+  if (!user.user_id)
+    return (
+      <Link href="/login">
+        <div className="ml-20 mt-24 text-2xl hover:underline">
+          Click to Login
+        </div>
+      </Link>
+    );
   return (
     <>
       <Title text={"Log Workout"} />
@@ -38,14 +45,28 @@ export default function LogPage() {
           onClick={handleShowWorkouts}
           className="ml-5 border p-1 rounded relative"
         >
-          My Workouts {chosenWorkout.workout_name ? `: ${chosenWorkout.workout_name}` : null}
-          <>{showWorkouts? <WorkoutsDropDown setChosenExercises={setChosenExercises} setChosenWorkout={setChosenWorkout} chosenWorkout={chosenWorkout} userWorkouts={userWorkouts}/> : null}</>
+          {!chosenWorkout.workout_name ? "Choose a workout" : "Chosen Workout"}{" "}
+          {chosenWorkout.workout_name
+            ? `: ${chosenWorkout.workout_name}`
+            : null}
+          <>
+            {showWorkouts ? (
+              <WorkoutsDropDown
+                setChosenExercises={setChosenExercises}
+                setChosenWorkout={setChosenWorkout}
+                chosenWorkout={chosenWorkout}
+                userWorkouts={userWorkouts}
+              />
+            ) : null}
+          </>
         </button>
-        <LogWorkoutContainer
-          chosenExercises={chosenExercises}
-          setChosenExercises={setChosenExercises}
-          chosenWorkout={chosenWorkout}
-        />
+        {chosenWorkout.workout_name ? (
+          <LogWorkoutContainer
+            chosenExercises={chosenExercises}
+            setChosenExercises={setChosenExercises}
+            chosenWorkout={chosenWorkout}
+          />
+        ) : null}
       </div>
     </>
   );
