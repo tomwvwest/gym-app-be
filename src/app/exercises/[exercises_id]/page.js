@@ -2,6 +2,8 @@
 import { Title } from "../../components/General/Title";
 import { useState, useEffect } from "react";
 import { useUserContext } from "@/app/contexts/userContext";
+import SessionCard from "@/app/components/Session/SessionCard";
+import styles from "@/app/style";
 
 
 
@@ -45,26 +47,21 @@ export default function SingleExercisePage({params}) {
         fetchData()
         }, [exercise_id, user.user_id])
 
-        function convertToDateString(str){
-            const date = str.slice(8,10) + '/' + str.slice(5,7) + '/' + str.slice(0,4)
-            const time = str.slice(11,16)
-            
-            return {time, date}
-          }
 
 
   return (
     <>
     <Title text={`${currentExercise.name}`}/>
+    <h2 className={styles.subtitle}>History:</h2>
+    <ul>
     {currentExerciseData.map((data)=>{
         return (
-            <div key={data.logged_id}>
-                <p>{convertToDateString(data.completed_at).time} | {convertToDateString(data.completed_at).date}</p>
-                <p>Weight: {data.weight}</p>
-                <p>Reps: {data.reps}</p>
-            </div>
+            <li key={data.logged_id}>
+            <SessionCard session={data}></SessionCard>
+            </li>
         )
     })}
+    </ul>
     </>
   );
 }
