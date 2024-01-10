@@ -5,26 +5,30 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/posts")
       .then((res) => {
-        setIsLoading(false)
+        setIsLoading(false);
         return res.json();
       })
       .then((postsData) => {
-        setPosts(postsData);
+        setPosts(
+          postsData.sort((a, b) => {
+            return new Date(b.completed_at) - new Date(a.completed_at)
+          })
+        );
       });
   }, []);
 
-  if(isLoading) {
-    return <LoadingSkeleton/>
+  if (isLoading) {
+    return <LoadingSkeleton />;
   }
 
   return (
     <main>
-        <HomePostContainer posts={posts}/>
+      <HomePostContainer posts={posts} />
     </main>
   );
 }
