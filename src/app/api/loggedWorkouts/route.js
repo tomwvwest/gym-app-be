@@ -55,7 +55,6 @@ async function GET(req) {
   } else {
     sessions = await prisma.loggedWorkouts.findMany({});
   }
-
   return NextResponse.json(sessions, { status: 200 });
 }
 
