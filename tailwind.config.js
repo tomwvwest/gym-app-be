@@ -14,7 +14,9 @@ module.exports = {
       white: '#FFFFFF',
       LightGreen: '#5FAD41',
       DarkGreen: '#2D936C',
-      Red: '#B84A62'
+      Red: '#B84A62',
+      Pink: '#CA2E55',
+      Lavender: '#A5A3E1',
     },
     extend: {
       backgroundImage: {

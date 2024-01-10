@@ -1,4 +1,5 @@
 import ExerciseListCard from "./ExerciseListCard";
+import styles from "@/app/style";
 
 export default function ExerciseModal({ setExercisesInWorkout, exercisesInWorkout, allExercises, workout_id, visible, onClose, fetchExercisesError }) {
     if (!visible) { return null }
@@ -7,14 +8,16 @@ export default function ExerciseModal({ setExercisesInWorkout, exercisesInWorkou
     const filteredExercises = allExercises.filter((exercise) => !exerciseIdsInWorkouts.includes(exercise.exercise_id));
 
     return (
-        <section className="border bg-platinum">
+        <section className="bg-platinum my-5">
             {fetchExercisesError ? <p>Error loading exercises Please try again.</p> : null}
-            <button onClick={onClose}>Close</button>
-            <h1>All Exercises</h1>
+            <div className="flex justify-between">
+                <h1 className={`${styles.subtitle}`}>All Exercises</h1>
+                <button className={`${styles.subtitle} text-Pink`} onClick={onClose}>Close</button>
+            </div>
             <ul>
                 {filteredExercises.map(((exercise) => {
                     return (
-                        <li key={exercise.exercise_id} className="border p-2 m-2 rounded-lg">
+                        <li key={exercise.exercise_id} className="p-4 my-2 rounded-lg bg-Lavender">
                             <ExerciseListCard
                                 exercisesInWorkout={exercisesInWorkout}
                                 setExercisesInWorkout={setExercisesInWorkout}
