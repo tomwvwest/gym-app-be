@@ -5,8 +5,10 @@ import { BrowseWorkoutsContainer } from "../components/Browse/BrowseWorkoutsCont
 import { LoadingSkeleton } from "../components/General/LoadingSkeleton";
 import { Title } from "../components/General/Title";
 import { useEffect, useState } from "react";
+import { useUserContext } from "@/app/contexts/userContext";
 
 export default function BrowsePage() {
+  const { user, setUser } = useUserContext();
   const [workouts, setWorkouts] = useState(null);
   const [users, setUsers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
