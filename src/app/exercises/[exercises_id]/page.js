@@ -48,8 +48,15 @@ export default function SingleExercisePage({params}) {
   return (
     <>
     <Title text={`${currentExercise.name}`}/>
-    <p>{`${currentExerciseData[1].weight}`}</p>
-    
+    {currentExerciseData.map((data)=>{
+        return (
+            <div key={currentExerciseData.logged_id}>
+                <p>{data.completed_at}</p>
+                <p>{data.weight}</p>
+                <p>{data.reps}</p>
+            </div>
+        )
+    })}
     </>
   );
 }
