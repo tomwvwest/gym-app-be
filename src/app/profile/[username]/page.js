@@ -22,7 +22,6 @@ export default function ProfilePage(req) {
         return Promise.all([res.json(), res2.json()]);
       })
       .then(([workoutsData, postsData]) => {
-        console.log(postsData);
         const workoutData = workoutsData.filter(
           (workout) => workout.creator_id === user.user_id
         );
@@ -32,8 +31,6 @@ export default function ProfilePage(req) {
         setIsLoading(false);
       });
   }, []);
-
-  console.log(workouts, posts);
 
   if (isLoading) {
     return <LoadingSkeleton />;
