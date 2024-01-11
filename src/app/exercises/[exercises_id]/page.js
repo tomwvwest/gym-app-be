@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useUserContext } from "@/app/contexts/userContext";
 import SessionCard from "@/app/components/Session/SessionCard";
 import styles from "@/app/style";
+import ExerciseChart from "@/app/components/exercises/ExerciseChart";
 
 
 
@@ -52,6 +53,8 @@ export default function SingleExercisePage({params}) {
   return (
     <>
     <Title text={`${currentExercise.name}`}/>
+    <ExerciseChart data={currentExerciseData} exerciseName={currentExercise.name}></ExerciseChart>
+
     <h2 className={styles.subtitle}>History:</h2>
     <ul>
     {currentExerciseData.map((data)=>{
