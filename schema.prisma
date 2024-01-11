@@ -24,7 +24,7 @@ model Users {
   user_id Int @id @default(autoincrement())
   username String @unique
   password String
-  image_url String?
+  image_url String? @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png")
   workouts Workouts[]
   loggedWorkouts LoggedWorkouts[]
   comments Comments[]

@@ -7,8 +7,9 @@ import WorkoutCard from "../../components/workouts/WorkoutCard";
 import { UserPostContainer } from "@/app/components/Posts/UserPosts";
 import { useRouter } from "next/navigation";
 
-export default function ProfilePage(req) {
+export default function ProfilePage({params}) {
   const { user, setUser } = useUserContext();
+  const [profileUser, setProfileUser] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
   const [workouts, setWorkouts] = useState([]);
@@ -17,15 +18,16 @@ export default function ProfilePage(req) {
   const router = useRouter();
 
   useEffect(() => {
-    Promise.all([fetch(`/api/workouts`), fetch(`/api/posts`)])
-      .then(([res, res2]) => {
-        return Promise.all([res.json(), res2.json()]);
+    Promise.all([fetch(`/api/workouts`), fetch(`/api/posts`), fetch(`/api/users/profile/${params.username}`)])
+      .then(([res, res2, res3]) => {
+        return Promise.all([res.json(), res2.json(), res3.json()]);
       })
-      .then(([workoutsData, postsData]) => {
+      .then(([workoutsData, postsData, userData]) => {
+        setProfileUser(userData)
         const workoutData = workoutsData.filter(
-          (workout) => workout.creator_id === user.user_id
+          (workout) => workout.creator_id === userData.user_id
         );
-        const postData = postsData.filter((post) => post.user_id === 2);
+        const postData = postsData.filter((post) => post.user_id === userData.user_id);
         setWorkouts(workoutData);
         setPosts(postData);
         setIsLoading(false);
@@ -44,10 +46,13 @@ export default function ProfilePage(req) {
   return (
     <>
       <div className="flex justify-between items-end pr-16">
-        <Title text={`${user.username}`} />
-        <button className="border rounded-lg p-2" onClick={handleLogout}>
-          Logout
-        </button>
+        <Title text={`${profileUser.username}`} />
+        {user.username === profileUser.username ? 
+          <button className="border rounded-lg p-2" onClick={handleLogout}>
+            Logout
+          </button> :
+          null
+        }
       </div>
       <div className="px-12 pt-4 flex justify-around">
         <div className="w-full">
@@ -71,8 +76,9 @@ export default function ProfilePage(req) {
           <p className="text-2xl font-bold text-DeepPurple">Workouts</p>
           {workouts.map((workout) => {
             return (
-              <div className="flex justify-start w-full">
+              <div className="flex justify-start w-full" key={workout.workout_id}>
                 <WorkoutCard
+                  canDelete={user.user_id === workout.creator_id}
                   workout={workout}
                   setIsDeleted={setIsDeleted}
                   setWorkouts={setWorkouts}
