@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "@/app/style";
 
-export default function AddExercise ({ setAllExercises, allExercises }) {
+export default function AddExercise ({ setAllExercises, allExercises, setFilteredExercises, filteredExercises }) {
     const [dropdown, setDropdown] = useState('/caret-right.svg');
     const [newExercise, setNewExercise] = useState({
         name: '',
@@ -39,6 +39,7 @@ export default function AddExercise ({ setAllExercises, allExercises }) {
         
         } else {
             setAllExercises(() => ([...allExercises, {...newExercise, exercise_id: 'temp'}]))
+            setFilteredExercises(() => ([...filteredExercises, {...newExercise, exercise_id: 'temp'}]))
     
             fetch(`/api/exercises`, {
                 method: 'POST',
@@ -61,6 +62,7 @@ export default function AddExercise ({ setAllExercises, allExercises }) {
             })
             .then((data) => {
                 setAllExercises([...allExercises, data])
+                setFilteredExercises([...filteredExercises, data])
             })
             .catch((error) => {
                 setIsError(error)

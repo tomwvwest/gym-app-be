@@ -36,14 +36,14 @@ export default function Exercises () {
     }, [])
 
     const handleSearchInput = (event) => {
-        // console.log(allExercises)
         setInput(event.target.value)
 
         const filteredItems = allExercises.filter((exercise) => {
             return exercise.name.toLowerCase().includes(event.target.value)
         })
 
-        setAllExercises(filteredItems)
+        // setAllExercises(filteredItems)
+        setFilteredExercises(filteredItems)
     }
 
     if (isError) return <ErrorPage error={Error}/>
@@ -55,8 +55,8 @@ export default function Exercises () {
                 <form className="flex my-3 border rounded-xl overflow-hidden">
                     <input className="py-1 px-2 h-9 w-full text-DeepPurple" placeholder="Find an exercise" value={input} onChange={handleSearchInput}></input>
                 </form>
-                <AllExercisesList allExercises={allExercises}/>
-                {isLoading ? <LoadingSkeleton/> : <AddExercise setAllExercises={setAllExercises} allExercises={allExercises}/>}
+                <AllExercisesList allExercises={filteredExercises}/>
+                {isLoading ? <LoadingSkeleton/> : <AddExercise setAllExercises={setAllExercises} allExercises={allExercises} setFilteredExercises={setFilteredExercises} filteredExercises={filteredExercises}/>}
             </div>
        </section> 
     )
