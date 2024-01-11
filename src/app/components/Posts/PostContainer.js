@@ -73,12 +73,12 @@ export const PostContainer = ({ post, isNotLastChild }) => {
       post_id: post.post_id,
       body: newComment,
       user_id: user.user_id,
-      completed_at: getCurrentTimestamp(),
-    };
-    setComments((prevVals) => [...prevVals, commentData]);
-    axios.post("/api/comments", commentData).then((res) => {
-      setNewComments("");
-    });
+      completed_at: getCurrentTimestamp()
+    }
+    axios.post('/api/comments', commentData).then((res)=>{
+      setNewComments('')
+    })
+    setComments((prevVals) => [...prevVals, commentData])
   }
 
   return (
