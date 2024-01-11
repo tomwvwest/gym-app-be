@@ -16,7 +16,7 @@ export const Header = () => {
         {user.username ? (
           <div className="w-11 h-11 rounded-full overflow-hidden">
             <Link href={`/profile/${user.username}`}>
-              <img src="../image.png"></img>
+              <img src={user.image_url}></img>
             </Link>
           </div>
         ) : (

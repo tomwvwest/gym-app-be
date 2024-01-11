@@ -85,7 +85,7 @@ export const PostContainer = ({ post, isNotLastChild }) => {
     <div className="mb-5 min-w-[80%] max-w-[500px] ">
       <div className="flex items-center mb-3">
         <div className="w-11 h-11 rounded-full overflow-hidden">
-          <img src="/image.png"></img>
+          <img src={postUser.image_url}></img>
         </div>
         <div className="ml-3 opacity-50 text-sm text-DeepPurple">
           <Link href={`/profile/${postUser.username}`} className="flex w-fit">
