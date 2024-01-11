@@ -14,6 +14,7 @@ export default function ProfilePage({params}) {
   const [posts, setPosts] = useState([]);
   const [workouts, setWorkouts] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [showPosts, setShowPosts] = useState(true)
 
   const router = useRouter();
 
@@ -43,6 +44,10 @@ export default function ProfilePage({params}) {
     router.push("/");
   };
 
+  const handleShowPosts = () => {
+    setShowPosts(!showPosts)
+  }
+
   return (
     <>
       <div className="flex justify-between items-end pr-16">
@@ -54,10 +59,18 @@ export default function ProfilePage({params}) {
           null
         }
       </div>
-      <div className="px-12 pt-4 flex justify-around">
+      <div className="px-6 pt-4 flex justify-around">
         <div className="w-full">
-          <p className="text-2xl font-bold text-DeepPurple">Recent Posts</p>
-          <div className="rounded-2xl border w-5/6 mt-3">
+          <div className="flex items-center">
+          <p className={`hover:cursor-pointer p-1 rounded mr-4 ${
+            showPosts ? "border font-bold" : null
+          }`} onClick={handleShowPosts}>Recent Posts</p>
+          <p className={`mr-5 hover:cursor-pointer p-1 rounded ${
+            !showPosts ? "border font-bold" : null
+          }`} onClick={handleShowPosts}>Workouts</p>
+          </div>
+          {showPosts ? 
+          <div className="rounded-2xl border mt-3 flex flex-col justify-center">
             {posts.map((post, index, array) => {
               const isNotLastChild = index !== array.length - 1 ? true : false;
               return (
@@ -71,21 +84,22 @@ export default function ProfilePage({params}) {
             })}
             {posts.length > 1 ? <hr className="text" /> : null}
           </div>
-        </div>
-        <div className="w-full">
-          <p className="text-2xl font-bold text-DeepPurple">Workouts</p>
-          {workouts.map((workout) => {
-            return (
-              <div className="flex justify-start w-full" key={workout.workout_id}>
-                <WorkoutCard
-                  canDelete={user.user_id === workout.creator_id}
-                  workout={workout}
-                  setIsDeleted={setIsDeleted}
-                  setWorkouts={setWorkouts}
-                />
-              </div>
-            );
-          })}
+          : 
+          <div className="w-full mt-4">
+            {workouts.map((workout) => {
+              return (
+                <div className="flex justify-start w-full" key={workout.workout_id}>
+                  <WorkoutCard
+                    canDelete={user.user_id === workout.creator_id}
+                    workout={workout}
+                    setIsDeleted={setIsDeleted}
+                    setWorkouts={setWorkouts}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          }
         </div>
       </div>
     </>
