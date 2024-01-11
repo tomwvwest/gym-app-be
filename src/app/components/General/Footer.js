@@ -13,7 +13,7 @@ export const Footer = () => {
         </li>
         <li>
           <Link href="/workouts" className={styles.footerListItem}>
-            <img src="../workoutsIcon.png"></img>My Workouts
+            <img src="../workoutsIcon.png"></img>Workouts
           </Link>
         </li>
         <Link href="/log-workout" className={styles.footerListItem}>

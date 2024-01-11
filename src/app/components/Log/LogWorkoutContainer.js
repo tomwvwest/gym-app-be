@@ -104,7 +104,7 @@ export const LogWorkoutContainer = ({chosenExercises, setChosenExercises, chosen
     <div className=" my-7 mx-16">
       <div className="flex items-center">
         <button
-          className="border p-1 rounded relative z-1"
+          className="border p-1 rounded relative z-[100] "
           onClick={handleAddExerciseButton}
         >
           Add Exercise

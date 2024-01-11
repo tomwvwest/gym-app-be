@@ -2,8 +2,10 @@
 import { Title } from "../../components/General/Title";
 import { useState, useEffect } from "react";
 import { useUserContext } from "@/app/contexts/userContext";
-
-
+import SessionCard from "@/app/components/Session/SessionCard";
+import styles from "@/app/style";
+import ExerciseChart from "@/app/components/exercises/ExerciseChart";
+import Link from "next/link";
 
 export default function SingleExercisePage({params}) {
     const [currentExercise, setCurrentExercise] = useState({})
@@ -31,8 +33,8 @@ export default function SingleExercisePage({params}) {
                 return res.json()
             })
             .then((data)=>{
+                console.log(data)
                 setCurrentExerciseData(data)
-                console.log(currentExerciseData, "holaa")
             })
         }
 
@@ -45,26 +47,30 @@ export default function SingleExercisePage({params}) {
         fetchData()
         }, [exercise_id, user.user_id])
 
-        function convertToDateString(str){
-            const date = str.slice(8,10) + '/' + str.slice(5,7) + '/' + str.slice(0,4)
-            const time = str.slice(11,16)
-            
-            return {time, date}
-          }
 
 
   return (
-    <>
-    <Title text={`${currentExercise.name}`}/>
-    {currentExerciseData.map((data)=>{
-        return (
-            <div key={data.logged_id}>
-                <p>{convertToDateString(data.completed_at).time} | {convertToDateString(data.completed_at).date}</p>
-                <p>Weight: {data.weight}</p>
-                <p>Reps: {data.reps}</p>
+    <main className={`flex justify-center`}>
+        <div className={`${styles.bodySection}`}>
+            <h1 className={`${styles.title}`}>{currentExercise.name}</h1>
+            <div className="flex text-md font-bold h-6 rounded-lg mb-5">
+                <Link href="/exercises" className="flex">
+                    <img src="/caret-left.svg" className="h-full"></img>
+                    <p className="w-fit">All Exercises</p>
+                </Link>
             </div>
-        )
-    })}
-    </>
+            <ExerciseChart data={currentExerciseData} exerciseName={currentExercise.name}></ExerciseChart>
+            <h2 className={`${styles.subtitle} mt-5`}>History:</h2>
+            <ul className="mb-5">
+                {currentExerciseData.map((data)=>{
+                    return (
+                        <li key={data.logged_id}>
+                        <SessionCard session={data}></SessionCard>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
+    </main>
   );
 }

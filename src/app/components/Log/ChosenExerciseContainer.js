@@ -50,7 +50,7 @@ export const ChosenExerciseContainer = ({
       <div className="flex items-center">
         <SetsContainer sets={sets} setSets={setSets} />
         <button
-          className="p-1 rounded border mr-2 ml-auto mt-auto"
+          className="p-1 rounded border mr-2 ml-auto mt-auto bg-Red"
           onClick={handleRemove}
         >
           Remove
