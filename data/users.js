@@ -6,7 +6,7 @@ module.exports = [{
 {
     "username":"tomwest",
     "password":"welovetom",
-    "image_url": "https://upload.wikimedia.org/wikipedia/en/thumb/8/81/Wario.png/250px-Wario.png"
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/4/46/Waluigi.png"
 },
 {
     "username":"harrydaniels",
