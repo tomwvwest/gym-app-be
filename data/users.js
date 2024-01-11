@@ -17,7 +17,7 @@ module.exports = [{
 {
     "username":"willprice",
     "password":"welovetom",
-    "image_url": "https://static.wikia.nocookie.net/mario/images/3/3f/SMBW_Bowser_Artwork.png/revision/latest?cb=20230910142646"
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/9/92/Bowser_Stock_Art_2021.png"
 
 },
 {
