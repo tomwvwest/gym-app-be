@@ -70,7 +70,7 @@ export const UserPostContainer = ({ post, isNotLastChild }) => {
   }
 
   return (
-    <div className="mb-5 min-w-[80%] max-w-[500px] ">
+    <div className="mb-5 min-w-[95%] max-w-[500px] ">
       <div className="flex items-center mb-3">
         <div className="ml-3 opacity-50 text-sm text-DeepPurple">
           <p>{convertToDateString(post.completed_at).time} | {convertToDateString(post.completed_at).date}</p>
