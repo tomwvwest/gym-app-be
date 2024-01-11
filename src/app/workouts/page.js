@@ -103,7 +103,7 @@ export default function WorkoutsPage() {
           {workouts.map((workout) => {
             return (
               <li key={workout.workout_id}>
-                <WorkoutCard workout={workout} setWorkouts={setWorkouts} setIsDeleted={setIsDeleted}/>
+                <WorkoutCard workout={workout} setWorkouts={setWorkouts} setIsDeleted={setIsDeleted} canDelete={true}/>
               </li>
             )
           })}
