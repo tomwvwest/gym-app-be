@@ -34,4 +34,6 @@ async function seedDatabase() {
   }
 }
 
-module.exports = seedDatabase;
+seedDatabase()
+
+// module.exports = seedDatabase;
