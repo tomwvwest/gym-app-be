@@ -28,7 +28,7 @@ export const CommentContainer = ({ comment }) => {
   return (
     <>
       <div>
-        <img src="image.png" className="w-10 rounded-full mr-3"></img>
+        <img src={user.image_url} className="w-10 rounded-full mr-3"></img>
       </div>
       <div>
         <Link href={`/profile/${user.username}`} className="flex w-fit">
