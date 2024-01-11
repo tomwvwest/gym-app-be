@@ -5,13 +5,12 @@ export default function ExerciseChart({data}, exerciseName) {
   useEffect(() => {
 
     const exerciseData = data
-   
-    console.log(exerciseData, "here it is")
+  
     const ctx = document.getElementById('exerciseData').getContext('2d');
     const myChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: exerciseData.map((row) => row.completed_at.slice(0, 10)),
+        labels: exerciseData.map((row) => row.completed_at.slice(5, 10) + '-' + row.completed_at.slice(2, 4)),
         datasets: [
           {
             label: 'Weight',
@@ -27,6 +26,7 @@ export default function ExerciseChart({data}, exerciseName) {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         interaction: {
           mode: 'index',
           intersect: false,
@@ -64,9 +64,9 @@ export default function ExerciseChart({data}, exerciseName) {
   }, [data]); // Empty dependency array to run the effect only once
 
   return (
-    <div>
+    <div className='relative h-[50vh] w-full'>
       <h2>{exerciseName.exerciseName}</h2>
-      <canvas id="exerciseData" width="400" height="200"></canvas>
+      <canvas id="exerciseData" height="100%"></canvas>
     </div>
   );
 }

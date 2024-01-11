@@ -62,7 +62,7 @@ export default function Login() {
     
     return (
         <section className='min-h-screen flex justify-evenly flex-col items-center'>
-            <h1 className="pt-3 pb-2 font-extrabold text-3xl text-DeepPurple mb-3">Welcome to Jimmy</h1>
+            <h1 className="pt-3 pb-2 font-extrabold text-3xl text-DeepPurple mb-3">Welcome to Gymie</h1>
             <form className='text-DeepPurple flex flex-col justify-center items-center border p-4 rounded-2xl' onSubmit={handleSubmit}>
                 <label htmlFor="username" className='text-DeepPurple'>Username:</label>
                 <input type="text" value={username} name="username" id="username" className='text-black-200 mt-5 mb-5 p-2' onChange={handleUsername} placeholder='Username...' required/>

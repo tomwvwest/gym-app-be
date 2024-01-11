@@ -12,10 +12,10 @@ export default function SessionCard ({ session }) {
     return (
         <div className={`${styles.card}`}>
             <div key={session.logged_id}>
-                <div  className={styles.bodySection}>
-                <p>{convertToDateString(session.completed_at).time} | {convertToDateString(session.completed_at).date}</p>
-                <p>Weight: {session.weight}</p>
-                <p>Reps: {session.reps}</p>
+                <div className="flex gap-5 text-sm md:text-lg lg:text-lg">
+                    <p className="w-[35%]">{convertToDateString(session.completed_at).date}</p>
+                    <p className="w-[35%]"><span className="font-bold">Weight: </span>{session.weight}</p>
+                    <p className="w-[30%]"><span className="font-bold">Reps: </span>{session.reps}</p>
                 </div>
             </div>
         </div>
