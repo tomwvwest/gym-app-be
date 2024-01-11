@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState } from 'react';
 import styles from "@/app/style";
 
-export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted }) {
+export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted, canDelete }) {
     const [isDeleting, setIsDeleting] = useState(false)
     const [removeError, setRemoveError] = useState(null);
     const {workout_id} = workout
@@ -46,11 +46,13 @@ export default function WorkoutCard ({ workout, setWorkouts, setIsDeleted }) {
                     <p className={`${styles.cardTitle}`}>{workout.workout_name}</p>
                 </Link>
             </div>
+            {canDelete ? 
             <div className="flex justify-end w-[30%] pr-2">
                 <button onClick={handleRemoveFromWorkout}>
                     <img className="h-9" src="/delete.svg"></img>
                 </button>
-            </div>
+            </div> : null
+            }
             {isDeleting ? (removeError ? <p>Could not delete workout. Please try again.</p> : <p>Deleting...</p>): null}
         </div>
     )

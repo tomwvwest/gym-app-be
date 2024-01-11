@@ -39,7 +39,6 @@ async function GET(req) {
   const exerciseId = parseInt(searchParams.get("exercise_id"));
 
   if (userId && exerciseId) {
-    console.log('yes')
     sessions = await prisma.loggedWorkouts.findMany({
       where: {
         user_id: userId,

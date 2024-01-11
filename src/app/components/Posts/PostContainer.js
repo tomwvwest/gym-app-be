@@ -63,17 +63,17 @@ export const PostContainer = ({ post, isNotLastChild }) => {
       user_id: user.user_id,
       completed_at: getCurrentTimestamp()
     }
-    setComments((prevVals) => [...prevVals, commentData])
     axios.post('/api/comments', commentData).then((res)=>{
       setNewComments('')
     })
+    setComments((prevVals) => [...prevVals, commentData])
   }
 
   return (
     <div className="mb-5 min-w-[80%] max-w-[500px] ">
       <div className="flex items-center mb-3">
         <div className="w-11 h-11 rounded-full overflow-hidden">
-          <img src="/image.png"></img>
+          <img src="/image.png"/>
         </div>
         <div className="ml-3 opacity-50 text-sm text-DeepPurple">
           <Link href={`/profile/${postUser.username}`} className="flex w-fit">
