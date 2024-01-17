@@ -1,3 +1,7 @@
+## Video Presentation
+Watch our 5-min video presentation here:
+https://github.com/tomwvwest/gym-app-be/assets/88091126/06bbf496-07fa-4bb1-bb9b-2f20abcfa249
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
